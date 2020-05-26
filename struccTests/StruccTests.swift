@@ -1,6 +1,6 @@
 //
-//  struccTests.swift
-//  struccTests
+//  StruccTests.swift
+//  StruccTests
 //
 //  Created by Alejandro Arjonilla Garcia on 26/05/2020.
 //  Copyright © 2020 aarjincc. All rights reserved.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import strucc
 
-class struccTests: XCTestCase {
+class StruccTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
