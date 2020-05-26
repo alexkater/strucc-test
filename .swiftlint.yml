@@ -1,0 +1,37 @@
+disabled_rules:
+  - multiple_closures_with_trailing_closure
+  - empty_parentheses_with_trailing_closure
+  - identifier_name
+  - unused_optional_binding
+  - line_length
+  - function_parameter_count
+  - syntactic_sugar
+  - implicit_getter
+  - todo
+  - weak_delegate
+  - cyclomatic_complexity
+  - void_return
+  - legacy_hashing
+  - type_name
+  - function_body_length
+  - valid_ibinspectable
+  - orphaned_doc_comment
+
+file_length:
+  warning: 1000
+  error: 1200
+
+force_cast: error
+
+type_body_length:
+  warning: 300
+  error: 500
+
+type_name:
+  min_length:
+    error: 3 # only error
+  max_length:
+    warning: 50
+    error: 65
+  excluded: # excluded via string array
+    - T
