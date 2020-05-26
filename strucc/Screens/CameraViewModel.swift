@@ -9,10 +9,10 @@
 import Foundation
 
 protocol CameraViewModelProtocol {
-    var isButtonSelected: Bool { get }
-    var navigate: Any
-    
-    func record()
+//    var isButtonSelected: Bool { get }
+//    var navigate: Any
+//    
+//    func record()
 }
 
 final class CameraViewModel: CameraViewModelProtocol {

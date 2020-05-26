@@ -13,7 +13,7 @@
 		A98EE2E0247CE49D00BE96DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A98EE2DE247CE49D00BE96DF /* Main.storyboard */; };
 		A98EE2E2247CE49E00BE96DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98EE2E1247CE49E00BE96DF /* Assets.xcassets */; };
 		A98EE2E5247CE49E00BE96DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A98EE2E3247CE49E00BE96DF /* LaunchScreen.storyboard */; };
-		A98EE2F0247CE49E00BE96DF /* struccTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98EE2EF247CE49E00BE96DF /* struccTests.swift */; };
+		A98EE2F0247CE49E00BE96DF /* StruccTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98EE2EF247CE49E00BE96DF /* StruccTests.swift */; };
 		A98EE2FC247D02F300BE96DF /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98EE2FB247D02F300BE96DF /* DI.swift */; };
 		A9A17FEE247D06BE00D3C043 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A17FED247D06BE00D3C043 /* CameraViewModel.swift */; };
 		A9A17FF0247D075100D3C043 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A17FEF247D075100D3C043 /* Routes.swift */; };
@@ -39,7 +39,7 @@
 		A98EE2E4247CE49E00BE96DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A98EE2E6247CE49E00BE96DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A98EE2EB247CE49E00BE96DF /* struccTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = struccTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A98EE2EF247CE49E00BE96DF /* struccTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = struccTests.swift; sourceTree = "<group>"; };
+		A98EE2EF247CE49E00BE96DF /* StruccTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StruccTests.swift; sourceTree = "<group>"; };
 		A98EE2F1247CE49E00BE96DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A98EE2FB247D02F300BE96DF /* DI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DI.swift; sourceTree = "<group>"; };
 		A9A17FED247D06BE00D3C043 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 		A98EE2EE247CE49E00BE96DF /* struccTests */ = {
 			isa = PBXGroup;
 			children = (
-				A98EE2EF247CE49E00BE96DF /* struccTests.swift */,
+				A98EE2EF247CE49E00BE96DF /* StruccTests.swift */,
 				A98EE2F1247CE49E00BE96DF /* Info.plist */,
 			);
 			path = struccTests;
@@ -134,6 +134,7 @@
 				A98EE2D1247CE49D00BE96DF /* Sources */,
 				A98EE2D2247CE49D00BE96DF /* Frameworks */,
 				A98EE2D3247CE49D00BE96DF /* Resources */,
+				A9A17FF1247D0A6500D3C043 /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -220,6 +221,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A9A17FF1247D0A6500D3C043 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A98EE2D1247CE49D00BE96DF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -238,7 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A98EE2F0247CE49E00BE96DF /* struccTests.swift in Sources */,
+				A98EE2F0247CE49E00BE96DF /* StruccTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
