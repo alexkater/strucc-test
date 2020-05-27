@@ -13,6 +13,24 @@ import CoreImage.CIFilterBuiltins
 
 class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
 
+    func getRandomFilter(seconds: Double, inputImage: CIImage) -> CIImage? {
+        // TODO: @aarjonilla check if makes sense to use non typed way
+        let filter: CIFilter & CIPhotoEffect
+        switch seconds {
+        case 0...2:
+            filter = CIFilter.photoEffectNoir()
+        case 2...5:
+            filter = CIFilter.photoEffectInstant()
+        case 5...9:
+            filter = CIFilter.photoEffectChrome()
+        default:
+            filter = CIFilter.photoEffectMono()
+        }
+
+        filter.inputImage = inputImage
+        return filter.outputImage
+    }
+
     override public init() {
         super.init()
     }
@@ -50,38 +68,68 @@ class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
     }
 
     public func startRequest(_ request: AVAsynchronousVideoCompositionRequest) {
-        guard let pixelBuffer = request.renderContext.newPixelBuffer() else {
-            request.finish(with: StruccError.undeterminedError)
+
+        guard request.sourceTrackIDs.count > 0 else {
+            let error = NSError(domain: "com.outtherelabs.video", code: 500, userInfo: [NSLocalizedDescriptionKey: "No source track IDs"])
+            request.finish(with: error)
             return
         }
 
-        if let instruction = request.videoCompositionInstruction as? AVVideoCompositionInstruction {
+        guard let instruction = request.videoCompositionInstruction as? AVVideoCompositionInstruction else {
+            let error = NSError(domain: "com.outtherelabs.video", code: 500, userInfo: [NSLocalizedDescriptionKey: "Can't render instruction: \(request.videoCompositionInstruction), unknown instruction type"])
+            request.finish(with: error)
+            return
+        }
 
-            let backgroundColor = CIColor(cgColor: UIColor.clear.cgColor)
-            let contextExtent = CGRect(origin: CGPoint.zero, size: request.renderContext.size)
-            let backgroundImage = CIImage(color: backgroundColor).cropped(to: contextExtent)
+        guard let pixelBuffer = request.renderContext.newPixelBuffer() else {
+            let error = NSError(domain: "com.outtherelabs.video", code: 500, userInfo: [NSLocalizedDescriptionKey: "Could not render video frame"])
+            request.finish(with: error)
+            return
+        }
 
-            let composedImage = instruction.layerInstructions.reduce(backgroundImage, { (composedImage, instruction) -> CIImage in
-                guard let layerImageBuffer = request.sourceFrame(byTrackID: instruction.trackID) else {
-                     request.finish(withComposedVideoFrame: pixelBuffer)
-                     return composedImage
-                 }
+        render(request, instruction: instruction, pixelBuffer: pixelBuffer)
+    }
 
-                 let transformedImage = CIImage(cvPixelBuffer: layerImageBuffer)
-                     .transformed(by: request.renderContext.renderTransform)
-                     .applying(orientationTransform: .init(rotationAngle: 3 * .pi / 2), mirrored: false)
+    func render(_ request: AVAsynchronousVideoCompositionRequest,
+                instruction: AVVideoCompositionInstruction,
+                pixelBuffer: CVPixelBuffer) {
 
-                 let filter = CIFilter.gaussianBlur()
-                 filter.inputImage = transformedImage
-                 let filtered = filter.outputImage
+        let backgroundColor = CIColor(cgColor: UIColor.clear.cgColor)
+        let contextExtent = CGRect(origin: CGPoint.zero, size: request.renderContext.size)
+        let backgroundImage = CIImage(color: backgroundColor).cropped(to: contextExtent)
+
+        let composedImage = instruction.layerInstructions.reduce(backgroundImage, { (composedImage, instruction) -> CIImage in
+            print(instruction.trackID)
+            guard let layerImageBuffer = request.sourceFrame(byTrackID: instruction.trackID) else {
+                request.finish(withComposedVideoFrame: pixelBuffer)
+                return composedImage
+            }
+
+            let transformedImage = CIImage(cvPixelBuffer: layerImageBuffer)
+                .transformed(by: request.renderContext.renderTransform)
+                .applying(orientationTransform: .init(rotationAngle: 3 * .pi / 2), mirrored: false)
+
+            if instruction.trackID == 1 {
+
+                let filtered = getRandomFilter(seconds: request.compositionTime.seconds, inputImage: transformedImage)
 
                 return filtered?.composited(over: composedImage) ?? backgroundImage
-            })
+            } else {
 
-            imageContext.render(composedImage, to: pixelBuffer)
-            request.finish(withComposedVideoFrame: pixelBuffer)
-        } else {
-            request.finish(withComposedVideoFrame: pixelBuffer)
-        }
+                let cropped = transformedImage
+                    .transformed(by: CGAffineTransform(scaleX: 0.6, y: 0.6))
+                    .transformed(by: CGAffineTransform(translationX: contextExtent.width * 0.2, y: contextExtent.height * 0.2))
+                let filter = CIFilter.colorMatrix()
+                let overlayRgba: [CGFloat] = [0, 0, 0, 0.5]
+                let vector = CIVector(values: overlayRgba, count: 4)
+                filter.aVector = vector
+                filter.inputImage = cropped
+                let filtered = filter.outputImage
+                return filtered?.composited(over: composedImage) ?? backgroundImage
+            }
+        })
+
+        imageContext.render(composedImage, to: pixelBuffer)
+        request.finish(withComposedVideoFrame: pixelBuffer)
     }
 }

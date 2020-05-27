@@ -18,8 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
 //        let cameraViewController = MediaEditingViewController()
-        let cameraViewController = PreviewViewController()
-//        let cameraViewController = CameraViewController()
+//        let cameraViewController = PreviewViewController()
+        let cameraViewController = CameraViewController()
 
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = UINavigationController(rootViewController: cameraViewController)
