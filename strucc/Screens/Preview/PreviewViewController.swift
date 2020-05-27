@@ -18,36 +18,32 @@ final class PreviewViewController: UIViewController {
     init(viewModel: PreviewViewModelProtocol = PreviewViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        setupView()
-        createPreview()
-
-        viewModel.get { (composition, videoComposition) in
-            let playerItem = AVPlayerItem(asset: composition)
-            playerItem.videoComposition = videoComposition
-
-            let player = AVPlayer(playerItem: playerItem)
-            let previewLayer = AVPlayerLayer(player: player)
-            previewLayer.frame = view.bounds
-            previewLayer.videoGravity = .resizeAspectFill
-            view.layer.addSublayer(previewLayer)
-        }
     }
 
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+
+        viewModel.get { [weak self] (composition, videoComposition) in
+            let playerItem = AVPlayerItem(asset: composition)
+            playerItem.videoComposition = videoComposition
+
+            let player = AVPlayer(playerItem: playerItem)
+            let previewLayer = AVPlayerLayer(player: player)
+            previewLayer.frame = self?.view.bounds ?? .zero
+            previewLayer.videoGravity = .resizeAspectFill
+            self?.view.layer.addSublayer(previewLayer)
+            player.play()
+        }
+    }
 }
 
 private extension PreviewViewController {
-
-    func createPreview() {
-        let player = AVPlayer(playerItem: nil)
-        let previewLayer = AVPlayerLayer(player: player)
-        previewLayer.frame = view.bounds
-        previewLayer.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(previewLayer)
-    }
 
     func setupView() {
         navigationController?.setNavigationBarHidden(false, animated: false)
