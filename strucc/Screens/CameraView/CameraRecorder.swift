@@ -158,7 +158,7 @@ private extension CameraRecorder {
         movieOutput.stopRecording()
       }
     }
-    
+
     func getNewURL() throws -> URL {
         let directory = NSTemporaryDirectory()
         guard !directory.isEmpty else { throw CameraViewError.impossibleCreateFileURL }
