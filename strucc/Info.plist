@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Access to your photos please!</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Access to your photos please!</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>To listen your beautiful voice</string>
-	<key>NSCameraUsageDescription</key>
-	<string>We want to record cool videos!</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -28,6 +20,18 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We want to record cool videos!</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To listen your beautiful voice</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Access to your photos please!</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access to your photos please!</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>PostGrotesk-Bold.otf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -54,8 +58,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -63,10 +65,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>PostGrotesk-Bold.otf</string>
 	</array>
 </dict>
 </plist>

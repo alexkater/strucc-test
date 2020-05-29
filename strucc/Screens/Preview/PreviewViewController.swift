@@ -18,14 +18,19 @@ final class PreviewViewController: UIViewController {
     private var inifiteLoopObserver: NSObjectProtocol?
     private var playerView: UIView!
     private var closeButton: UIButton!
+    private let player = AVPlayer()
 
     var dataSource: CollectionViewDataSourceAndDelegate?
     weak var delegate: CollectionViewDataSourceAndDelegate?
     private var bindings = Set<AnyCancellable>()
+    private var currentComposition: AVComposition?
 
-    init(viewModel: PreviewViewModelProtocol = PreviewViewModel()) {
+    init(viewModel: PreviewViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        setupView()
+        setupConstraints()
+        setupBindings()
     }
 
     @available(*, unavailable)
@@ -33,36 +38,11 @@ final class PreviewViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-        setupConstraints()
-
-        viewModel.get { [weak self] (composition, videoComposition) in
-            let playerItem = AVPlayerItem(asset: composition)
-            playerItem.videoComposition = videoComposition
-
-            let player = AVPlayer(playerItem: playerItem)
-            let previewLayer = AVPlayerLayer(player: player)
-            previewLayer.frame = self?.view.bounds ?? .zero
-            previewLayer.videoGravity = .resizeAspectFill
-            self?.playerView.layer.addSublayer(previewLayer)
-            self?.addInfiniteLoop(player)
-
-            player.play()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIView.animate(withDuration: 1) { [weak self] in
+            self?.view.backgroundColor = .clear
         }
-
-        viewModel.filters
-            .sink { [weak self] (items) in
-                self?.dataSource?.items = items
-                self?.collectionview.reloadData()
-        }
-        .store(in: &bindings)
-    }
-
-    deinit {
-        guard let observer = inifiteLoopObserver else { return }
-        NotificationCenter.default.removeObserver(observer, name: .AVPlayerItemDidPlayToEndTime, object: nil)
     }
 }
 
@@ -77,7 +57,7 @@ private extension PreviewViewController {
 
     func setupView() {
         navigationController?.setNavigationBarHidden(true, animated: false)
-        self.view.backgroundColor = .black
+        self.view.backgroundColor = .red
 
         playerView = UIView(frame: view.bounds)
         playerView.backgroundColor = .clear
@@ -89,10 +69,27 @@ private extension PreviewViewController {
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
 
         [playerView, collectionview, closeButton].forEach { view.addSubview($0) }
+
+        let previewLayer = AVPlayerLayer(player: player)
+        previewLayer.frame = view.bounds
+        previewLayer.videoGravity = .resizeAspectFill
+        playerView.layer.addSublayer(previewLayer)
+        addInfiniteLoop(player)
+
+        playerView.alpha = 0
+
+        UIView.animate(withDuration: 1) {
+            self.playerView.alpha = 1
+        }
     }
 
     @objc func closeButtonTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: { [weak self] in
+            self?.player.pause()
+            self?.bindings.forEach { $0.cancel() }
+            guard let observer = self?.inifiteLoopObserver else { return }
+            NotificationCenter.default.removeObserver(observer, name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        })
     }
 
     func createCollectionView() -> UICollectionView {
@@ -125,8 +122,8 @@ private extension PreviewViewController {
         [
             collectionview.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionview.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionview.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionview.heightAnchor.constraint(equalToConstant: 150)
+            collectionview.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 11),
+            collectionview.heightAnchor.constraint(equalToConstant: 110)
         ]
             .active()
 
@@ -136,5 +133,43 @@ private extension PreviewViewController {
             closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12)
         ]
             .active()
+    }
+
+    func setupBindings() {
+
+        viewModel.composition
+            .delay(for: 0.3, scheduler: RunLoop.main)
+            .sink() { [weak self] (composition) in
+                guard let composition = composition else { return }
+                self?.updatePlayer(with: composition)
+        }.store(in: &bindings)
+
+        viewModel.filters
+            .sink { [weak self] (items) in
+                self?.dataSource?.items = items
+                self?.collectionview.reloadData()
+        }
+        .store(in: &bindings)
+
+        viewModel.error.sink(receiveValue: show(error:)).store(in: &bindings)
+    }
+
+    func show(error: String?) {
+        guard let error = error, !error.isEmpty else { return }
+        let alert = UIAlertController(title: "Really Sorry",
+                                      message: error, preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "Ok I understand", style: .default) { [weak self] (_) in
+            self?.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(defaultAction)
+
+        present(alert, animated: true, completion: nil)
+    }
+
+    func updatePlayer(with composition: Composition) {
+        let playerItem = AVPlayerItem(asset: composition.0)
+        playerItem.videoComposition = composition.1
+        player.replaceCurrentItem(with: playerItem)
+        player.play()
     }
 }

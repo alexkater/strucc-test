@@ -14,7 +14,10 @@ class CameraViewController: UIViewController {
 
     private var viewModel: CameraViewModelProtocol = CameraViewModel()
     private var cameraView: UIView!
-    var recordButton: RecordButton!
+    private var recordButton: RecordButton!
+    private var previewLayer: AVCaptureVideoPreviewLayer!
+    private var transition: TransitionAnimator!
+
     private var bindings = Set<AnyCancellable>()
 
     override func viewDidLoad() {
@@ -24,23 +27,30 @@ class CameraViewController: UIViewController {
         setupConstraints()
         setupBindings()
 
+        transition = TransitionAnimator(0.8, originFrame: recordButton.frame)
+
         #if DEBUG
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(longGestureTap))
         cameraView.addGestureRecognizer(longPressGesture)
         #endif
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewAppear()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.viewDisappear()
+    }
+
     #if DEBUG
-    @objc func longGestureTap() {
-        let controller = PreviewViewController()
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true, completion: nil)
+    @objc func longGestureTap(gestureReconizer: UILongPressGestureRecognizer) {
+        guard gestureReconizer.state == .ended else { return }
+        presentRoute(.preview(urls: urlsMock))
     }
     #endif
-
-    @objc func recordButtonTapped() {
-        viewModel.recordButtonAction()
-    }
 }
 
 private extension CameraViewController {
@@ -48,9 +58,14 @@ private extension CameraViewController {
     func setupView() {
         navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .gray
+
+        previewLayer = AVCaptureVideoPreviewLayer()
+        previewLayer.frame = view.bounds
+        previewLayer.videoGravity = .resizeAspectFill
         cameraView = UIView(frame: view.bounds)
+        cameraView.layer.addSublayer(previewLayer)
+
         recordButton = RecordButton(width: 74)
-        recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
         recordButton.backgroundColor = .clear
 
         [cameraView, recordButton].forEach { view.addSubview($0) }
@@ -61,24 +76,30 @@ private extension CameraViewController {
 
         let constraints = [
             recordButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            recordButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100),
+            recordButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -32),
             recordButton.widthAnchor.constraint(equalToConstant: 74),
             recordButton.heightAnchor.constraint(equalToConstant: 74)
         ]
 
         constraints.forEach { $0.isActive = true }
+
+        view.layoutSubviews()
     }
 
     func setupBindings() {
 
+        recordButton
+            .publisher(for: .touchUpInside)
+            .throttle(for: 1.5, scheduler: RunLoop.main, latest: false)
+            .sink { [weak self] (_) in
+                self?.viewModel.recordButtonAction()
+        }
+        .store(in: &bindings)
+
         viewModel
             .session
-            .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] (session) in
-                let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-                previewLayer.frame = self?.view.bounds ?? .zero
-                previewLayer.videoGravity = .resizeAspectFill
-                self?.cameraView.layer.addSublayer(previewLayer)
+                self?.previewLayer.session = session
             })
             .store(in: &bindings)
 
@@ -89,12 +110,31 @@ private extension CameraViewController {
 
         viewModel.navigate
             .compactMap { $0 }
-            .receive(on: RunLoop.main)
+            .delay(for: 1, scheduler: RunLoop.main)
             .sink(receiveValue: { [weak self] (value) in
-                let controller = value.controller
-                controller.modalPresentationStyle = .fullScreen
-                self?.present(controller, animated: true, completion: nil)
+                self?.presentRoute(value)
             })
             .store(in: &bindings)
+    }
+
+    func presentRoute(_ route: Routes) {
+        let controller = route.controller
+        controller.modalPresentationStyle = .currentContext
+        controller.transitioningDelegate = self
+        present(controller, animated: true, completion: nil)
+    }
+}
+
+extension CameraViewController: UIViewControllerTransitioningDelegate {
+
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+
+        transition.presenting = true
+        return transition
+    }
+
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.presenting = false
+        return transition
     }
 }

@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-typealias SelectionCallback = ((Int) -> Void)
-
 class CollectionViewDataSourceAndDelegate: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
 
     // MARK: - Variables:

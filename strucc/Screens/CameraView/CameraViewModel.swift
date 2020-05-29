@@ -11,11 +11,14 @@ import Combine
 import AVFoundation
 
 protocol CameraViewModelProtocol {
+
     var isButtonSelected: AnyPublisher<Bool, Never> { get }
     var navigate: AnyPublisher<Routes?, Never> { get }
     var session: AnyPublisher<AVCaptureSession, Never> { get }
 
     func recordButtonAction()
+    func viewAppear()
+    func viewDisappear()
 }
 
 final class CameraViewModel: CameraViewModelProtocol {
@@ -37,6 +40,14 @@ final class CameraViewModel: CameraViewModelProtocol {
 
     func recordButtonAction() {
         cameraRecorder.startOrStopRecording()
+    }
+
+    func viewAppear() {
+        cameraRecorder.startSession()
+    }
+
+    func viewDisappear() {
+        cameraRecorder.stopSession()
     }
 }
 

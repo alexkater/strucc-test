@@ -12,6 +12,7 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 
 class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
+
     private let filterProvider: FilterProviderProtocol
 
     func getRandomFilter(seconds: Double, inputImage: CIImage) -> CIImage? {
@@ -71,25 +72,35 @@ class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
 
     public func startRequest(_ request: AVAsynchronousVideoCompositionRequest) {
 
-        guard request.sourceTrackIDs.count > 0 else {
-            let error = NSError(domain: "com.outtherelabs.video", code: 500, userInfo: [NSLocalizedDescriptionKey: "No source track IDs"])
-            request.finish(with: error)
-            return
-        }
+        autoreleasepool {
+            renderingQueue.async { [weak self] in
+                guard let strongSelf = self else { return }
 
-        guard let instruction = request.videoCompositionInstruction as? AVVideoCompositionInstruction else {
-            let error = NSError(domain: "com.outtherelabs.video", code: 500, userInfo: [NSLocalizedDescriptionKey: "Can't render instruction: \(request.videoCompositionInstruction), unknown instruction type"])
-            request.finish(with: error)
-            return
-        }
+                guard request.sourceTrackIDs.count > 0 else {
+                    request.finish(with: StruccError.noSourceTracks)
+                    return
+                }
 
-        guard let pixelBuffer = request.renderContext.newPixelBuffer() else {
-            let error = NSError(domain: "com.outtherelabs.video", code: 500, userInfo: [NSLocalizedDescriptionKey: "Could not render video frame"])
-            request.finish(with: error)
-            return
-        }
+                guard let instruction = request.videoCompositionInstruction as? AVVideoCompositionInstruction else {
+                    request.finish(with: StruccError.noInstruction)
+                    return
+                }
 
-        render(request, instruction: instruction, pixelBuffer: pixelBuffer)
+                guard let pixelBuffer = request.renderContext.newPixelBuffer() else {
+                    request.finish(with: StruccError.cannotRenderPixelBuffer)
+                    return
+                }
+
+                strongSelf.render(request, instruction: instruction, pixelBuffer: pixelBuffer)
+            }
+        }
+    }
+
+    public func cancelAllPendingVideoCompositionRequests() {
+      renderingQueue.sync { shouldCancelAllRequests = true }
+      renderingQueue.async { [weak self] in
+        self?.shouldCancelAllRequests = false
+      }
     }
 
     func render(_ request: AVAsynchronousVideoCompositionRequest,

@@ -68,27 +68,47 @@ private extension RecordButton {
         self.layer.addSublayer(redAreaLayer)
     }
 
-    var transformScaleAnimation: CAPropertyAnimation {
+    var cornerRadiusAnimation: CAPropertyAnimation {
         let animation = CABasicAnimation(keyPath: "cornerRadius")
         animation.fromValue = isSelected ? initialCornerRadius : reducedCornerRadius
         animation.toValue = isSelected ? reducedCornerRadius : initialCornerRadius
         return animation
     }
 
-    var cornerRadiusAnimation: CAPropertyAnimation {
+    var transformScaleAnimation: CAPropertyAnimation {
         let animation = CABasicAnimation(keyPath: "transform.scale")
         animation.fromValue = isSelected ? 1 : 0.5
         animation.toValue = isSelected ? 0.5 : 1
         return animation
     }
 
+    var heartAnimation: CAPropertyAnimation {
+        let animation = CASpringAnimation(keyPath: "transform.scale")
+        animation.fromValue = 0.3
+        animation.toValue = 0.55
+        animation.duration = 1
+        animation.stiffness = 200
+        animation.damping = 5
+
+        animation.repeatCount = .infinity
+        return animation
+    }
+
     func animate() {
+        let duration = 0.2
 
         let animation = CAAnimationGroup()
-        animation.duration = 0.2
+        animation.duration = duration
         animation.animations = [transformScaleAnimation, cornerRadiusAnimation]
         animation.isRemovedOnCompletion = false
         animation.fillMode = .forwards
+
         redAreaLayer.add(animation, forKey: nil)
+
+        guard isSelected else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2*duration) { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.redAreaLayer.add(strongSelf.heartAnimation, forKey: nil)
+        }
     }
 }
