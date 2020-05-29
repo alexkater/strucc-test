@@ -166,7 +166,7 @@ private extension CameraRecorder {
 
 // MARK: - AVCaptureFileOutputRecordingDelegate
 extension CameraRecorder: AVCaptureFileOutputRecordingDelegate {
-    
+
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
         videosUrls.append(outputFileURL)
         mutableIsRecording.value = false

@@ -40,6 +40,12 @@ final class PreviewViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIView.animate(withDuration: 1) { [weak self] in
+            self?.view.backgroundColor = .clear
+        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupBindings()
@@ -57,7 +63,7 @@ private extension PreviewViewController {
 
     func setupView() {
         navigationController?.setNavigationBarHidden(true, animated: false)
-        self.view.backgroundColor = .black
+        self.view.backgroundColor = .red
 
         playerView = UIView(frame: view.bounds)
         playerView.backgroundColor = .clear

@@ -71,7 +71,7 @@ final class PreviewViewModel: PreviewViewModelProtocol {
 }
 
 #if DEBUG
-private let urlsMock = [
+let urlsMock = [
     "video1",
     "video2"
     ]

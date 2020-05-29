@@ -16,6 +16,7 @@ class CameraViewController: UIViewController {
     private var cameraView: UIView!
     private var recordButton: RecordButton!
     private var previewLayer: AVCaptureVideoPreviewLayer!
+    private var transition: TransitionAnimator!
 
     private var bindings = Set<AnyCancellable>()
 
@@ -25,6 +26,9 @@ class CameraViewController: UIViewController {
         setupView()
         setupConstraints()
         setupBindings()
+
+        transition = TransitionAnimator(0.8, originFrame: recordButton.frame)
+
         #if DEBUG
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(longGestureTap))
         cameraView.addGestureRecognizer(longPressGesture)
@@ -43,7 +47,7 @@ class CameraViewController: UIViewController {
 
     #if DEBUG
     @objc func longGestureTap() {
-        presentRoute(.preview(urls: []))
+        presentRoute(.preview(urls: urlsMock))
     }
     #endif
 }
@@ -77,6 +81,8 @@ private extension CameraViewController {
         ]
 
         constraints.forEach { $0.isActive = true }
+
+        view.layoutSubviews()
     }
 
     func setupBindings() {
@@ -112,7 +118,22 @@ private extension CameraViewController {
 
     func presentRoute(_ route: Routes) {
         let controller = route.controller
-        controller.modalPresentationStyle = .fullScreen
+        controller.modalPresentationStyle = .currentContext
+        controller.transitioningDelegate = self
         present(controller, animated: true, completion: nil)
+    }
+}
+
+extension CameraViewController: UIViewControllerTransitioningDelegate {
+
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+
+        transition.presenting = true
+        return transition
+    }
+
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.presenting = false
+        return transition
     }
 }
