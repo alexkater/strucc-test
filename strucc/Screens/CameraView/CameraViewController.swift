@@ -43,15 +43,9 @@ class CameraViewController: UIViewController {
 
     #if DEBUG
     @objc func longGestureTap() {
-        let controller = PreviewViewController()
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true, completion: nil)
+        presentRoute(.preview(urls: []))
     }
     #endif
-
-    @objc func recordButtonTapped() {
-        viewModel.recordButtonAction()
-    }
 }
 
 private extension CameraViewController {
@@ -67,7 +61,6 @@ private extension CameraViewController {
         cameraView.layer.addSublayer(previewLayer)
 
         recordButton = RecordButton(width: 74)
-        recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
         recordButton.backgroundColor = .clear
 
         [cameraView, recordButton].forEach { view.addSubview($0) }
@@ -88,6 +81,14 @@ private extension CameraViewController {
 
     func setupBindings() {
 
+        recordButton
+            .publisher(for: .touchUpInside)
+            .throttle(for: 2, scheduler: RunLoop.main, latest: false)
+            .sink { [weak self] (_) in
+                self?.viewModel.recordButtonAction()
+        }
+        .store(in: &bindings)
+
         viewModel
             .session
             .sink(receiveValue: { [weak self] (session) in
@@ -102,12 +103,16 @@ private extension CameraViewController {
 
         viewModel.navigate
             .compactMap { $0 }
-            .receive(on: RunLoop.main)
+            .delay(for: 1, scheduler: RunLoop.main)
             .sink(receiveValue: { [weak self] (value) in
-                let controller = value.controller
-                controller.modalPresentationStyle = .fullScreen
-                self?.present(controller, animated: true, completion: nil)
+                self?.presentRoute(value)
             })
             .store(in: &bindings)
+    }
+
+    func presentRoute(_ route: Routes) {
+        let controller = route.controller
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
     }
 }

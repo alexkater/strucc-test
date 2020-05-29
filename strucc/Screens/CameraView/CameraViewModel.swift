@@ -11,6 +11,7 @@ import Combine
 import AVFoundation
 
 protocol CameraViewModelProtocol {
+
     var isButtonSelected: AnyPublisher<Bool, Never> { get }
     var navigate: AnyPublisher<Routes?, Never> { get }
     var session: AnyPublisher<AVCaptureSession, Never> { get }

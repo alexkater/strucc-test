@@ -17,12 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = scene as? UIWindowScene else { return }
 
-//        let cameraViewController = PreviewViewController()
-        let cameraViewController = CameraViewController()
+        let rootController = Routes.camera.controller
 
-        let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = UINavigationController(rootViewController: cameraViewController)
-        self.window = window
-        window.makeKeyAndVisible()
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = rootController
+        window?.makeKeyAndVisible()
+        window?.windowScene = windowScene
     }
 }

@@ -44,10 +44,6 @@ final class PreviewViewController: UIViewController {
         super.viewDidAppear(animated)
         setupBindings()
     }
-
-    deinit {
-        print("de init")
-    }
 }
 
 private extension PreviewViewController {
