@@ -14,7 +14,9 @@ class CameraViewController: UIViewController {
 
     private var viewModel: CameraViewModelProtocol = CameraViewModel()
     private var cameraView: UIView!
-    var recordButton: RecordButton!
+    private var recordButton: RecordButton!
+    private var previewLayer: AVCaptureVideoPreviewLayer!
+
     private var bindings = Set<AnyCancellable>()
 
     override func viewDidLoad() {
@@ -23,11 +25,20 @@ class CameraViewController: UIViewController {
         setupView()
         setupConstraints()
         setupBindings()
-
         #if DEBUG
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(longGestureTap))
         cameraView.addGestureRecognizer(longPressGesture)
         #endif
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewAppear()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.viewDisappear()
     }
 
     #if DEBUG
@@ -48,7 +59,13 @@ private extension CameraViewController {
     func setupView() {
         navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .gray
+
+        previewLayer = AVCaptureVideoPreviewLayer()
+        previewLayer.frame = view.bounds
+        previewLayer.videoGravity = .resizeAspectFill
         cameraView = UIView(frame: view.bounds)
+        cameraView.layer.addSublayer(previewLayer)
+
         recordButton = RecordButton(width: 74)
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
         recordButton.backgroundColor = .clear
@@ -73,12 +90,8 @@ private extension CameraViewController {
 
         viewModel
             .session
-            .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] (session) in
-                let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-                previewLayer.frame = self?.view.bounds ?? .zero
-                previewLayer.videoGravity = .resizeAspectFill
-                self?.cameraView.layer.addSublayer(previewLayer)
+                self?.previewLayer.session = session
             })
             .store(in: &bindings)
 

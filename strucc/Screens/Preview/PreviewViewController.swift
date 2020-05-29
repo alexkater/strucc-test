@@ -18,6 +18,7 @@ final class PreviewViewController: UIViewController {
     private var inifiteLoopObserver: NSObjectProtocol?
     private var playerView: UIView!
     private var closeButton: UIButton!
+    private let player = AVPlayer()
 
     var dataSource: CollectionViewDataSourceAndDelegate?
     weak var delegate: CollectionViewDataSourceAndDelegate?
@@ -37,32 +38,15 @@ final class PreviewViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupConstraints()
+    }
 
-        viewModel.get { [weak self] (composition, videoComposition) in
-            let playerItem = AVPlayerItem(asset: composition)
-            playerItem.videoComposition = videoComposition
-
-            let player = AVPlayer(playerItem: playerItem)
-            let previewLayer = AVPlayerLayer(player: player)
-            previewLayer.frame = self?.view.bounds ?? .zero
-            previewLayer.videoGravity = .resizeAspectFill
-            self?.playerView.layer.addSublayer(previewLayer)
-            self?.addInfiniteLoop(player)
-
-            player.play()
-        }
-
-        viewModel.filters
-            .sink { [weak self] (items) in
-                self?.dataSource?.items = items
-                self?.collectionview.reloadData()
-        }
-        .store(in: &bindings)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupBindings()
     }
 
     deinit {
-        guard let observer = inifiteLoopObserver else { return }
-        NotificationCenter.default.removeObserver(observer, name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        print("de init")
     }
 }
 
@@ -89,10 +73,21 @@ private extension PreviewViewController {
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
 
         [playerView, collectionview, closeButton].forEach { view.addSubview($0) }
+
+        let previewLayer = AVPlayerLayer(player: player)
+        previewLayer.frame = view.bounds
+        previewLayer.videoGravity = .resizeAspectFill
+        playerView.layer.addSublayer(previewLayer)
+        addInfiniteLoop(player)
     }
 
     @objc func closeButtonTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: { [weak self] in
+            self?.player.pause()
+            self?.bindings.forEach { $0.cancel() }
+            guard let observer = self?.inifiteLoopObserver else { return }
+            NotificationCenter.default.removeObserver(observer, name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        })
     }
 
     func createCollectionView() -> UICollectionView {
@@ -136,5 +131,42 @@ private extension PreviewViewController {
             closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12)
         ]
             .active()
+    }
+
+    func setupBindings() {
+
+        viewModel.composition
+            .sink() { [weak self] (composition) in
+                guard let composition = composition else { return }
+                self?.updatePlayer(with: composition)
+        }.store(in: &bindings)
+
+        viewModel.filters
+            .sink { [weak self] (items) in
+                self?.dataSource?.items = items
+                self?.collectionview.reloadData()
+        }
+        .store(in: &bindings)
+
+        viewModel.error.sink(receiveValue: show(error:)).store(in: &bindings)
+    }
+
+    func show(error: String?) {
+        guard let error = error, !error.isEmpty else { return }
+        let alert = UIAlertController(title: "Really Sorry",
+                                      message: error, preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "Ok I understand", style: .default) { [weak self] (_) in
+            self?.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(defaultAction)
+
+        present(alert, animated: true, completion: nil)
+    }
+
+    func updatePlayer(with composition: Composition) {
+        let playerItem = AVPlayerItem(asset: composition.0)
+        playerItem.videoComposition = composition.1
+        player.replaceCurrentItem(with: playerItem)
+        player.play()
     }
 }

@@ -10,8 +10,6 @@ import Foundation
 import CoreImage
 import CoreImage.CIFilterBuiltins
 
-typealias FilterFunc = (CIImage) -> CIImage?
-
 struct Filter {
 
     let name: String

@@ -16,6 +16,8 @@ protocol CameraViewModelProtocol {
     var session: AnyPublisher<AVCaptureSession, Never> { get }
 
     func recordButtonAction()
+    func viewAppear()
+    func viewDisappear()
 }
 
 final class CameraViewModel: CameraViewModelProtocol {
@@ -37,6 +39,14 @@ final class CameraViewModel: CameraViewModelProtocol {
 
     func recordButtonAction() {
         cameraRecorder.startOrStopRecording()
+    }
+
+    func viewAppear() {
+        cameraRecorder.startSession()
+    }
+
+    func viewDisappear() {
+        cameraRecorder.stopSession()
     }
 }
 

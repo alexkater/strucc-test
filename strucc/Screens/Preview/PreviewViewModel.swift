@@ -10,13 +10,12 @@ import Foundation
 import AVFoundation
 import Combine
 
-typealias VideoCompositionCompletion = (AVComposition, AVVideoComposition?) -> Void
-
 protocol PreviewViewModelProtocol {
 
-    func get(_ completion: @escaping VideoCompositionCompletion)
+    var composition: AnyPublisher<Composition?, Never> { get }
     var filters: AnyPublisher<[EditorCollectionCellViewModel], Never> { get }
     var selectionCallbak: SelectionCallback { get }
+    var error: AnyPublisher<String?, Never> { get }
 }
 
 final class PreviewViewModel: PreviewViewModelProtocol {
@@ -25,7 +24,16 @@ final class PreviewViewModel: PreviewViewModelProtocol {
 
     lazy var filters: AnyPublisher<[EditorCollectionCellViewModel], Never> = mutableFilters.eraseToAnyPublisher()
     private var mutableFilters = CurrentValueSubject<[EditorCollectionCellViewModel], Never>([])
+
+    lazy var composition = mutableComposition.eraseToAnyPublisher()
+    private var mutableComposition = CurrentValueSubject<Composition?, Never>(nil)
+
+    lazy var error = mutableError.eraseToAnyPublisher()
+    private var mutableError = CurrentValueSubject<String?, Never>(nil)
+
     private var filterProvider: FilterProviderProtocol
+    private let videoEditor: VideoEditorProtocol
+    private var bindings = Set<AnyCancellable>()
 
     lazy var selectionCallbak: SelectionCallback = { [weak self] index in
         guard let strongSelf = self, strongSelf.filterProvider.filters.indices.contains(index) else { return }
@@ -33,28 +41,39 @@ final class PreviewViewModel: PreviewViewModelProtocol {
         strongSelf.filterProvider.selectedFilter = strongSelf.filterProvider.filters[index]
     }
 
-    init(urls: [URL] = urlsDemo, filterProvider: FilterProviderProtocol = FilterProvider.shared) {
+    init(urls: [URL] = urlsMock,
+         filterProvider: FilterProviderProtocol = FilterProvider.shared,
+         videoEditor: VideoEditorProtocol = VideoEditor()
+         ) {
         self.urls = urls
         self.filterProvider = filterProvider
+        self.videoEditor = videoEditor
 
+        updateComposition()
         mutableFilters.value = filterProvider.filters
             .map { EditorCollectionCellViewModel(title: $0.name, imageName: $0.imageName) }
     }
 
-    func get(_ completion: @escaping VideoCompositionCompletion) {
-        let videoEditor = VideoEditor(urls)
-        videoEditor.createComposition(completion)
+    deinit {
+        bindings.forEach { $0.cancel() }
+    }
+
+    func updateComposition() {
+        videoEditor
+             .createComposition(urls: urls)
+             .sink(receiveCompletion: { [weak self] (completion) in
+                 guard case let .failure(error) = completion else { return }
+                 self?.mutableError.value = error.description
+             }) { [weak self] (composition) in
+                 self?.mutableComposition.value = composition
+         }.store(in: &bindings)
     }
 }
 
 #if DEBUG
-let urlsDemo = [
+private let urlsMock = [
     "video1",
     "video2"
-//    ,
-//    "/private/var/mobile/Containers/Data/Application/10BC6128-2AC2-4DAB-BB20-FA7F3AA6B69C/tmp/2020-05-27 4:09:03 PM +0000-strucc.mov"
-//    ,
-//    "video3"
     ]
     .compactMap { videoName -> URL? in
         guard let path = Bundle.main.path(forResource: videoName, ofType: "MOV") else {
@@ -63,11 +82,6 @@ let urlsDemo = [
         }
         return URL(fileURLWithPath: path)
 }
-
-var audioUrl: URL {
-    guard let path = Bundle.main.path(forResource: "audio", ofType: "mp3") else {
-    fatalError("polpsdfasfdalkgnasgf")
-    }
-    return URL(fileURLWithPath: path)
-}
+#else
+let urls = []
 #endif

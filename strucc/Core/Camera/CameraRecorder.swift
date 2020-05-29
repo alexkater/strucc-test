@@ -23,6 +23,8 @@ protocol CameraRecorderProtocol {
 
     func startOrStopRecording()
     func reset()
+    func startSession()
+    func stopSession()
 }
 
 class CameraRecorder: NSObject, CameraRecorderProtocol {
@@ -46,14 +48,9 @@ class CameraRecorder: NSObject, CameraRecorderProtocol {
         super.init()
         do {
             try prepareSession()
-            startSession()
         } catch {
             print(error)
         }
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     func reset() {
@@ -62,6 +59,22 @@ class CameraRecorder: NSObject, CameraRecorderProtocol {
 
     func startOrStopRecording() {
         mutableIsRecording.value ? stopRecording(): startRecording()
+    }
+
+    func startSession() {
+        if !captureSession.isRunning {
+            sampleBufferQueue.async {
+                self.captureSession.startRunning()
+            }
+        }
+    }
+
+    func stopSession() {
+        if captureSession.isRunning {
+            sampleBufferQueue.async {
+                self.captureSession.stopRunning()
+            }
+        }
     }
 }
 
@@ -106,22 +119,6 @@ private extension CameraRecorder {
             }
         } catch {
             throw error
-        }
-    }
-
-    func startSession() {
-        if !captureSession.isRunning {
-            sampleBufferQueue.async {
-                self.captureSession.startRunning()
-            }
-        }
-    }
-
-    func stopSession() {
-        if captureSession.isRunning {
-            sampleBufferQueue.async {
-                self.captureSession.stopRunning()
-            }
         }
     }
 }

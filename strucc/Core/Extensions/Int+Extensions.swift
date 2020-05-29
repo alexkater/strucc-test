@@ -7,9 +7,15 @@
 //
 
 import UIKit
+import CoreMedia
 
 extension Int {
     var cgFloat: CGFloat { CGFloat(self) }
 
     var isOdd: Bool { self % 2 == 0 }
+}
+
+extension Int64 {
+
+    var cmTime: CMTime { CMTime(value: self, timescale: 600)}
 }

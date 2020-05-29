@@ -9,5 +9,11 @@
 import Foundation
 
 enum StruccError: Error {
-    case undeterminedError
+    case undeterminedError, cantTakeTracks, cantTakeAVAssetTracks, selfDeinitialized, cantInsertTimeRange
+
+    var description: String {
+        switch self {
+        default: return "Oooops! Something has happened"
+        }
+    }
 }
