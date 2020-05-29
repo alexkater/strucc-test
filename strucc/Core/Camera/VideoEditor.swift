@@ -17,7 +17,7 @@ protocol VideoEditorProtocol {
 class VideoEditor: VideoEditorProtocol {
 
     func createComposition(urls: [URL]) -> CompositionFuture {
-        
+
         CompositionFuture { [weak self] promise in
             guard let strongSelf = self else {
                 promise(.failure(.selfDeinitialized))
