@@ -17,8 +17,7 @@ protocol VideoEditorProtocol {
 class VideoEditor: VideoEditorProtocol {
 
     func createComposition(urls: [URL]) -> CompositionFuture {
-//        return CompositionFuture { $0(.failure(.cantInsertTimeRange)) }
-
+        
         CompositionFuture { promise in
 
             let composition = AVMutableComposition()

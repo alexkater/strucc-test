@@ -53,6 +53,7 @@ final class TransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
                 let yScaleFactor = finalFrame.height / recorderView.frame.height
                 let scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
                 recorderView.backgroundColor = .clear
+                recorderView.transform = scaleTransform
             }
             recorderView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
             recorderView.layer.cornerRadius = !strongSelf.presenting ? 0 : buttonRadius

@@ -46,7 +46,8 @@ class CameraViewController: UIViewController {
     }
 
     #if DEBUG
-    @objc func longGestureTap() {
+    @objc func longGestureTap(gestureReconizer: UILongPressGestureRecognizer) {
+        guard gestureReconizer.state == .ended else { return }
         presentRoute(.preview(urls: urlsMock))
     }
     #endif
@@ -75,7 +76,7 @@ private extension CameraViewController {
 
         let constraints = [
             recordButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            recordButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100),
+            recordButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -32),
             recordButton.widthAnchor.constraint(equalToConstant: 74),
             recordButton.heightAnchor.constraint(equalToConstant: 74)
         ]
@@ -89,7 +90,7 @@ private extension CameraViewController {
 
         recordButton
             .publisher(for: .touchUpInside)
-            .throttle(for: 2, scheduler: RunLoop.main, latest: false)
+            .throttle(for: 1.5, scheduler: RunLoop.main, latest: false)
             .sink { [weak self] (_) in
                 self?.viewModel.recordButtonAction()
         }

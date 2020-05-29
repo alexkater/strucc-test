@@ -49,24 +49,22 @@ final class PreviewViewModel: PreviewViewModelProtocol {
         self.filterProvider = filterProvider
         self.videoEditor = videoEditor
 
+        self.filterProvider.selectedFilter = filterProvider.filters.first
+
         updateComposition()
         mutableFilters.value = filterProvider.filters
             .map { EditorCollectionCellViewModel(title: $0.name, imageName: $0.imageName) }
     }
 
-    deinit {
-        bindings.forEach { $0.cancel() }
-    }
-
     func updateComposition() {
         videoEditor
-             .createComposition(urls: urls)
-             .sink(receiveCompletion: { [weak self] (completion) in
-                 guard case let .failure(error) = completion else { return }
-                 self?.mutableError.value = error.description
-             }) { [weak self] (composition) in
-                 self?.mutableComposition.value = composition
-         }.store(in: &bindings)
+            .createComposition(urls: urls)
+            .sink(receiveCompletion: { [weak self] (completion) in
+                guard case let .failure(error) = completion else { return }
+                self?.mutableError.value = error.description
+            }) { [weak self] (composition) in
+                self?.mutableComposition.value = composition
+        }.store(in: &bindings)
     }
 }
 

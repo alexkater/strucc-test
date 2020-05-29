@@ -15,3 +15,4 @@ typealias SelectionCallback = ((Int) -> Void)
 typealias FilterFunc = (CIImage) -> CIImage?
 typealias Composition = (AVComposition, AVVideoComposition?)
 typealias CompositionFuture = Future<Composition, StruccError>
+typealias CompositionCompletion = (Composition) -> Void

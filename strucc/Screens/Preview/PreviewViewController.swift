@@ -23,10 +23,14 @@ final class PreviewViewController: UIViewController {
     var dataSource: CollectionViewDataSourceAndDelegate?
     weak var delegate: CollectionViewDataSourceAndDelegate?
     private var bindings = Set<AnyCancellable>()
+    private var currentComposition: AVComposition?
 
-    init(viewModel: PreviewViewModelProtocol = PreviewViewModel()) {
+    init(viewModel: PreviewViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        setupView()
+        setupConstraints()
+        setupBindings()
     }
 
     @available(*, unavailable)
@@ -34,21 +38,11 @@ final class PreviewViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-        setupConstraints()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIView.animate(withDuration: 1) { [weak self] in
             self?.view.backgroundColor = .clear
         }
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setupBindings()
     }
 }
 
@@ -81,6 +75,12 @@ private extension PreviewViewController {
         previewLayer.videoGravity = .resizeAspectFill
         playerView.layer.addSublayer(previewLayer)
         addInfiniteLoop(player)
+
+        playerView.alpha = 0
+
+        UIView.animate(withDuration: 1) {
+            self.playerView.alpha = 1
+        }
     }
 
     @objc func closeButtonTapped() {
@@ -122,8 +122,8 @@ private extension PreviewViewController {
         [
             collectionview.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionview.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionview.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionview.heightAnchor.constraint(equalToConstant: 150)
+            collectionview.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 11),
+            collectionview.heightAnchor.constraint(equalToConstant: 110)
         ]
             .active()
 
@@ -138,6 +138,7 @@ private extension PreviewViewController {
     func setupBindings() {
 
         viewModel.composition
+            .delay(for: 0.3, scheduler: RunLoop.main)
             .sink() { [weak self] (composition) in
                 guard let composition = composition else { return }
                 self?.updatePlayer(with: composition)
