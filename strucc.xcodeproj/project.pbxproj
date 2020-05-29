@@ -7,8 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A921BB0A247D70150047C5AB /* video1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = A921BB08247D6FFA0047C5AB /* video1.mp4 */; };
-		A921BB0B247D70150047C5AB /* video2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = A921BB07247D6FF90047C5AB /* video2.mp4 */; };
+		A915B541247F1B5C0000A35C /* video1.MOV in Resources */ = {isa = PBXBuildFile; fileRef = A915B540247F1B5C0000A35C /* video1.MOV */; };
+		A9383A93247FAA890046399E /* PreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383A92247FAA890046399E /* PreviewCollectionViewCell.swift */; };
+		A9383A96247FAF4C0046399E /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383A95247FAF4C0046399E /* UICollectionView+Extensions.swift */; };
+		A9383A98247FB5CD0046399E /* CollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383A97247FB5CD0046399E /* CollectionViewFlowLayout.swift */; };
+		A9383A9F247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383A9E247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift */; };
+		A9383AA2247FE12D0046399E /* FilterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383AA1247FE12D0046399E /* FilterProvider.swift */; };
+		A9383AA6247FF9C90046399E /* PostGrotesk-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9383AA5247FF9C90046399E /* PostGrotesk-Bold.otf */; };
+		A9383AB124811DB60046399E /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383AB024811DB60046399E /* Int+Extensions.swift */; };
+		A9383AB324811DF40046399E /* CIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383AB224811DF40046399E /* CIImage+Extension.swift */; };
+		A956D944247E791A00C18229 /* VideoCompositor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A956D943247E791A00C18229 /* VideoCompositor.swift */; };
+		A956D948247E7ECC00C18229 /* audio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A956D947247E7ECC00C18229 /* audio.mp3 */; };
+		A95E0BB6247EDDF400143250 /* video2.MOV in Resources */ = {isa = PBXBuildFile; fileRef = A95E0BB4247EDDF300143250 /* video2.MOV */; };
 		A98EE2D9247CE49D00BE96DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98EE2D8247CE49D00BE96DF /* AppDelegate.swift */; };
 		A98EE2DB247CE49D00BE96DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98EE2DA247CE49D00BE96DF /* SceneDelegate.swift */; };
 		A98EE2DD247CE49D00BE96DF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98EE2DC247CE49D00BE96DF /* CameraViewController.swift */; };
@@ -25,6 +35,7 @@
 		A9A18000247D6A1C00D3C043 /* CameraRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A17FFF247D6A1C00D3C043 /* CameraRecorder.swift */; };
 		A9F4DCD6247E3A3E00D64341 /* VideoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F4DCD5247E3A3E00D64341 /* VideoEditor.swift */; };
 		A9F4DCDB247E5A5600D64341 /* CameraRecorderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F4DCDA247E5A5600D64341 /* CameraRecorderMock.swift */; };
+		A9F4DCDE247E605A00D64341 /* StruccLayerInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F4DCDD247E605A00D64341 /* StruccLayerInstruction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,8 +49,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A921BB07247D6FF90047C5AB /* video2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video2.mp4; sourceTree = "<group>"; };
-		A921BB08247D6FFA0047C5AB /* video1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = video1.mp4; sourceTree = "<group>"; };
+		A915B540247F1B5C0000A35C /* video1.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video1.MOV; sourceTree = "<group>"; };
+		A9383A92247FAA890046399E /* PreviewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCollectionViewCell.swift; sourceTree = "<group>"; };
+		A9383A95247FAF4C0046399E /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
+		A9383A97247FB5CD0046399E /* CollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		A9383A9E247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSourceAndDelegate.swift; sourceTree = "<group>"; };
+		A9383AA1247FE12D0046399E /* FilterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterProvider.swift; sourceTree = "<group>"; };
+		A9383AA5247FF9C90046399E /* PostGrotesk-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PostGrotesk-Bold.otf"; sourceTree = "<group>"; };
+		A9383AB024811DB60046399E /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		A9383AB224811DF40046399E /* CIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Extension.swift"; sourceTree = "<group>"; };
+		A956D943247E791A00C18229 /* VideoCompositor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositor.swift; sourceTree = "<group>"; };
+		A956D947247E7ECC00C18229 /* audio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = audio.mp3; sourceTree = "<group>"; };
+		A95E0BB4247EDDF300143250 /* video2.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video2.MOV; sourceTree = "<group>"; };
 		A98EE2D5247CE49D00BE96DF /* strucc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = strucc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A98EE2D8247CE49D00BE96DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A98EE2DA247CE49D00BE96DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +81,7 @@
 		A9A17FFF247D6A1C00D3C043 /* CameraRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRecorder.swift; sourceTree = "<group>"; };
 		A9F4DCD5247E3A3E00D64341 /* VideoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditor.swift; sourceTree = "<group>"; };
 		A9F4DCDA247E5A5600D64341 /* CameraRecorderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRecorderMock.swift; sourceTree = "<group>"; };
+		A9F4DCDD247E605A00D64341 /* StruccLayerInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StruccLayerInstruction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,10 +105,37 @@
 		A921BB09247D6FFE0047C5AB /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				A921BB08247D6FFA0047C5AB /* video1.mp4 */,
-				A921BB07247D6FF90047C5AB /* video2.mp4 */,
+				A915B540247F1B5C0000A35C /* video1.MOV */,
+				A95E0BB4247EDDF300143250 /* video2.MOV */,
+				A956D947247E7ECC00C18229 /* audio.mp3 */,
 			);
 			path = resources;
+			sourceTree = "<group>";
+		};
+		A9383A94247FAF360046399E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A9383A95247FAF4C0046399E /* UICollectionView+Extensions.swift */,
+				A9383AB024811DB60046399E /* Int+Extensions.swift */,
+				A9383AB224811DF40046399E /* CIImage+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A9383AA0247FE1220046399E /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				A9383AA1247FE12D0046399E /* FilterProvider.swift */,
+			);
+			path = Filters;
+			sourceTree = "<group>";
+		};
+		A9383AA3247FF9AA0046399E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A9383AA5247FF9C90046399E /* PostGrotesk-Bold.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		A98EE2CC247CE49D00BE96DF = {
@@ -110,6 +159,7 @@
 		A98EE2D7247CE49D00BE96DF /* strucc */ = {
 			isa = PBXGroup;
 			children = (
+				A9383AA3247FF9AA0046399E /* Fonts */,
 				A921BB09247D6FFE0047C5AB /* resources */,
 				A98EE2FD247D033800BE96DF /* Screens */,
 				A98EE2FA247D02E800BE96DF /* Core */,
@@ -135,6 +185,9 @@
 		A98EE2FA247D02E800BE96DF /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				A9383AA0247FE1220046399E /* Filters */,
+				A9383A94247FAF360046399E /* Extensions */,
+				A9F4DCDC247E603200D64341 /* Camera */,
 				A98EE2FB247D02F300BE96DF /* DI.swift */,
 				A9A17FEF247D075100D3C043 /* Routes.swift */,
 				A9A17FF2247D0FBF00D3C043 /* StruccError.swift */,
@@ -165,7 +218,6 @@
 				A98EE2DC247CE49D00BE96DF /* CameraViewController.swift */,
 				A9A17FED247D06BE00D3C043 /* CameraViewModel.swift */,
 				A9A17FF4247D25E800D3C043 /* RecordButton.swift */,
-				A9A17FFF247D6A1C00D3C043 /* CameraRecorder.swift */,
 			);
 			path = CameraView;
 			sourceTree = "<group>";
@@ -174,8 +226,10 @@
 			isa = PBXGroup;
 			children = (
 				A9A17FFB247D63F400D3C043 /* PreviewViewController.swift */,
+				A9383A92247FAA890046399E /* PreviewCollectionViewCell.swift */,
 				A9A17FFD247D642700D3C043 /* PreviewViewModel.swift */,
-				A9F4DCD5247E3A3E00D64341 /* VideoEditor.swift */,
+				A9383A97247FB5CD0046399E /* CollectionViewFlowLayout.swift */,
+				A9383A9E247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift */,
 			);
 			path = Preview;
 			sourceTree = "<group>";
@@ -186,6 +240,17 @@
 				A9F4DCDA247E5A5600D64341 /* CameraRecorderMock.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		A9F4DCDC247E603200D64341 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				A9F4DCD5247E3A3E00D64341 /* VideoEditor.swift */,
+				A956D943247E791A00C18229 /* VideoCompositor.swift */,
+				A9A17FFF247D6A1C00D3C043 /* CameraRecorder.swift */,
+				A9F4DCDD247E605A00D64341 /* StruccLayerInstruction.swift */,
+			);
+			path = Camera;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,10 +335,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A921BB0A247D70150047C5AB /* video1.mp4 in Resources */,
-				A921BB0B247D70150047C5AB /* video2.mp4 in Resources */,
+				A9383AA6247FF9C90046399E /* PostGrotesk-Bold.otf in Resources */,
+				A956D948247E7ECC00C18229 /* audio.mp3 in Resources */,
 				A98EE2E5247CE49E00BE96DF /* LaunchScreen.storyboard in Resources */,
 				A98EE2E2247CE49E00BE96DF /* Assets.xcassets in Resources */,
+				A915B541247F1B5C0000A35C /* video1.MOV in Resources */,
+				A95E0BB6247EDDF400143250 /* video2.MOV in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,18 +379,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9383AB324811DF40046399E /* CIImage+Extension.swift in Sources */,
 				A9A17FF5247D25E800D3C043 /* RecordButton.swift in Sources */,
 				A98EE2FC247D02F300BE96DF /* DI.swift in Sources */,
+				A956D944247E791A00C18229 /* VideoCompositor.swift in Sources */,
+				A9383AA2247FE12D0046399E /* FilterProvider.swift in Sources */,
 				A9A17FF0247D075100D3C043 /* Routes.swift in Sources */,
 				A9A17FFE247D642700D3C043 /* PreviewViewModel.swift in Sources */,
+				A9383A9F247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift in Sources */,
 				A98EE2DD247CE49D00BE96DF /* CameraViewController.swift in Sources */,
+				A9383A93247FAA890046399E /* PreviewCollectionViewCell.swift in Sources */,
+				A9383AB124811DB60046399E /* Int+Extensions.swift in Sources */,
 				A9A17FF3247D0FBF00D3C043 /* StruccError.swift in Sources */,
 				A98EE2D9247CE49D00BE96DF /* AppDelegate.swift in Sources */,
+				A9383A96247FAF4C0046399E /* UICollectionView+Extensions.swift in Sources */,
 				A9A18000247D6A1C00D3C043 /* CameraRecorder.swift in Sources */,
 				A9A17FEE247D06BE00D3C043 /* CameraViewModel.swift in Sources */,
 				A98EE2DB247CE49D00BE96DF /* SceneDelegate.swift in Sources */,
 				A9F4DCD6247E3A3E00D64341 /* VideoEditor.swift in Sources */,
 				A9A17FFC247D63F400D3C043 /* PreviewViewController.swift in Sources */,
+				A9383A98247FB5CD0046399E /* CollectionViewFlowLayout.swift in Sources */,
+				A9F4DCDE247E605A00D64341 /* StruccLayerInstruction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +552,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 58TN26CK22;
 				INFOPLIST_FILE = strucc/Info.plist;
@@ -486,6 +563,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.aarjinc.strucc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -495,6 +573,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 58TN26CK22;
 				INFOPLIST_FILE = strucc/Info.plist;
@@ -505,6 +584,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.aarjinc.strucc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

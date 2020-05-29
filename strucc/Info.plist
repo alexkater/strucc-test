@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access to your photos please!</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Access to your photos please!</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To listen your beautiful voice</string>
 	<key>NSCameraUsageDescription</key>
@@ -59,6 +63,10 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>PostGrotesk-Bold.otf</string>
 	</array>
 </dict>
 </plist>
