@@ -17,7 +17,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = scene as? UIWindowScene else { return }
 
-//        let cameraViewController = MediaEditingViewController()
 //        let cameraViewController = PreviewViewController()
         let cameraViewController = CameraViewController()
 

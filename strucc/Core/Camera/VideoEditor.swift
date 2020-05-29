@@ -20,60 +20,59 @@ class VideoEditor {
 
         let composition = AVMutableComposition()
         let videoComposition = AVMutableVideoComposition()
-        //        videoComposition.customVideoCompositorClass = VideoCompositor.self
+        let instructionOne = AVMutableVideoCompositionInstruction()
+        let instructionTwo = AVMutableVideoCompositionInstruction()
+        videoComposition.customVideoCompositorClass = VideoCompositor.self
+
         guard
             let videoTrackOne = composition.addMutableTrack(withMediaType: .video, preferredTrackID: 1),
             let videoTrackTwo = composition.addMutableTrack(withMediaType: .video, preferredTrackID: 2),
-            let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: 3)
+            let audioTrackOne = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: 3),
+            let audioTrackTwo = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: 4)
             else { fatalError("Empty video track")}
 
         let avAssets = Array(urls
             .compactMap { url in
                 AVAsset(url: url)
             })
-        let assetOne = avAssets[0]
-        let assetTwo = avAssets[1]
 
-        guard let videoAssetTrackOne = assetOne.tracks(withMediaType: .video).first,
-            let videoAssetTrackTwo = assetTwo.tracks(withMediaType: .video).first,
-            let audioTrackOne = assetOne.tracks(withMediaType: .audio).first
-            else { fatalError("No tracks to add") }
+        let minDuration = avAssets
+            .map { $0.duration.seconds }
+            .sorted(by: <)
+            .first ?? 0
+        let minDurationTime = CMTime(seconds: minDuration, preferredTimescale: 600)
 
-        let timeRangeA = CMTimeRange(start: .zero, duration: assetOne.duration)
+        avAssets.indices.forEach { (indice) in
+            let avAsset = avAssets[indice]
+            let videoTrack = indice.isOdd ? videoTrackOne: videoTrackTwo
+            let audioTrack = indice.isOdd ? audioTrackOne: audioTrackTwo
 
-        do {
-            try videoTrackOne.insertTimeRange(timeRangeA, of: videoAssetTrackOne, at: .zero)
-            try audioTrack.insertTimeRange(timeRangeA, of: audioTrackOne, at: .zero)
-        } catch {
-            print("Error trying to add track \n\n\(error)")
+            guard let videoAssetTrack = avAsset.tracks(withMediaType: .video).first,
+                let audioAssetTrack = avAsset.tracks(withMediaType: .audio).first
+                else { fatalError("No tracks to add") }
+
+            let timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
+
+            do {
+                try videoTrack.insertTimeRange(timeRange, of: videoAssetTrack, at: .zero)
+                try audioTrack.insertTimeRange(timeRange, of: audioAssetTrack, at: .zero)
+            } catch {
+                print("Error trying to add track \n\n\(error)")
+            }
         }
 
-        do {
-            try videoTrackTwo.insertTimeRange(CMTimeRange(start: .zero, duration: assetTwo.duration), of: videoAssetTrackTwo, at: .zero)
-        } catch {
-            print("Error trying to add track \n\n\(error)")
-        }
+        instructionOne.timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
+        instructionTwo.timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
 
-        let instructionOne = AVMutableVideoCompositionInstruction()
-        instructionOne.timeRange = CMTimeRange(start: .zero, duration: videoAssetTrackOne.timeRange.duration)
         let layerInstructionOne = StruccLayerInstruction(type: .background, assetTrack: videoTrackOne)
-
-        let instructionTwo = AVMutableVideoCompositionInstruction()
-        instructionTwo.timeRange = CMTimeRange(start: .zero, duration: videoAssetTrackTwo.timeRange.duration)
         let layerInstructionTwo = StruccLayerInstruction(type: .foreground, assetTrack: videoTrackTwo)
 
         instructionOne.layerInstructions = [layerInstructionOne, layerInstructionTwo]
-//        instructionTwo.layerInstructions = [layerInstructionTwo]
 
         videoComposition.frameDuration = CMTime(seconds: 1/60, preferredTimescale: 60)
         videoComposition.instructions = [instructionOne]
             .sorted(by: { $0.timeRange.duration.seconds < $1.timeRange.duration.seconds })
         videoComposition.renderSize = CGSize(width: 1080, height: 1920)
-        videoComposition.customVideoCompositorClass = VideoCompositor.self
-
-        print("""
-             composition.duration.seconds \(composition.duration.seconds)
-         """)
 
         completion(composition, videoComposition)
     }
@@ -101,18 +100,10 @@ class VideoEditor {
         layerInstruction.setTransform(track.preferredTransform, at: .zero)
         layerInstruction.setOpacityRamp(fromStartOpacity: 1, toEndOpacity: 0, timeRange: timeRange)
 
-        print("""
-            start \(timeRange.start.seconds)
-            end  \(timeRange.end.seconds)
-        """)
         videoInstruction.layerInstructions = [layerInstruction]
 
         return videoInstruction
     }
-}
-
-extension Int {
-    var isOdd: Bool { self % 2 == 0 }
 }
 
 extension CMTime {

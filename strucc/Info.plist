@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>asdfasdfasdfsafd</string>
+	<string>Access to your photos please!</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>asdfasdfsdf</string>
+	<string>Access to your photos please!</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To listen your beautiful voice</string>
 	<key>NSCameraUsageDescription</key>
@@ -63,6 +63,10 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>PostGrotesk-Bold.otf</string>
 	</array>
 </dict>
 </plist>

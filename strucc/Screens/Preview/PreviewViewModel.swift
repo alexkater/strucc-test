@@ -8,20 +8,37 @@
 
 import Foundation
 import AVFoundation
+import Combine
 
 typealias VideoCompositionCompletion = (AVComposition, AVVideoComposition?) -> Void
 
 protocol PreviewViewModelProtocol {
 
     func get(_ completion: @escaping VideoCompositionCompletion)
+    var filters: AnyPublisher<[EditorCollectionCellViewModel], Never> { get }
+    var selectionCallbak: SelectionCallback { get }
 }
 
 final class PreviewViewModel: PreviewViewModelProtocol {
 
     private let urls: [URL]
 
-    init(urls: [URL] = urlsDemo) {
+    lazy var filters: AnyPublisher<[EditorCollectionCellViewModel], Never> = mutableFilters.eraseToAnyPublisher()
+    private var mutableFilters = CurrentValueSubject<[EditorCollectionCellViewModel], Never>([])
+    private var filterProvider: FilterProviderProtocol
+
+    lazy var selectionCallbak: SelectionCallback = { [weak self] index in
+        guard let strongSelf = self, strongSelf.filterProvider.filters.indices.contains(index) else { return }
+
+        strongSelf.filterProvider.selectedFilter = strongSelf.filterProvider.filters[index]
+    }
+
+    init(urls: [URL] = urlsDemo, filterProvider: FilterProviderProtocol = FilterProvider.shared) {
         self.urls = urls
+        self.filterProvider = filterProvider
+
+        mutableFilters.value = filterProvider.filters
+            .map { EditorCollectionCellViewModel(title: $0.name, imageName: $0.imageName) }
     }
 
     func get(_ completion: @escaping VideoCompositionCompletion) {

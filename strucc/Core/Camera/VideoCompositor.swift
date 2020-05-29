@@ -12,6 +12,7 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 
 class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
+    private let filterProvider: FilterProviderProtocol
 
     func getRandomFilter(seconds: Double, inputImage: CIImage) -> CIImage? {
         // TODO: @aarjonilla check if makes sense to use non typed way
@@ -32,6 +33,7 @@ class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
     }
 
     override public init() {
+        self.filterProvider = FilterProvider.shared
         super.init()
     }
 
@@ -99,7 +101,6 @@ class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
         let backgroundImage = CIImage(color: backgroundColor).cropped(to: contextExtent)
 
         let composedImage = instruction.layerInstructions.reduce(backgroundImage, { (composedImage, instruction) -> CIImage in
-            print(instruction.trackID)
             guard let layerImageBuffer = request.sourceFrame(byTrackID: instruction.trackID) else {
                 request.finish(withComposedVideoFrame: pixelBuffer)
                 return composedImage
@@ -111,9 +112,10 @@ class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
 
             if instruction.trackID == 1 {
 
-                let filtered = getRandomFilter(seconds: request.compositionTime.seconds, inputImage: transformedImage)
+                guard let filter = filterProvider.selectedFilter?.filter else { return transformedImage }
 
-                return filtered?.composited(over: composedImage) ?? backgroundImage
+                return filter(transformedImage)?.composited(over: composedImage) ?? backgroundImage
+
             } else {
 
                 let cropped = transformedImage

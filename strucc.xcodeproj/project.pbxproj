@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A90B692A247E927300AD22D6 /* RenderPipelineCompositor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90B6928247E927300AD22D6 /* RenderPipelineCompositor.swift */; };
-		A90B692B247E927300AD22D6 /* RenderPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90B6929247E927300AD22D6 /* RenderPipeline.swift */; };
-		A90B692D247E934200AD22D6 /* MediaEditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90B692C247E934100AD22D6 /* MediaEditingViewController.swift */; };
-		A90B692F247E936B00AD22D6 /* PlayerItemPipelineDisplayLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90B692E247E936B00AD22D6 /* PlayerItemPipelineDisplayLink.swift */; };
 		A915B541247F1B5C0000A35C /* video1.MOV in Resources */ = {isa = PBXBuildFile; fileRef = A915B540247F1B5C0000A35C /* video1.MOV */; };
+		A9383A93247FAA890046399E /* PreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383A92247FAA890046399E /* PreviewCollectionViewCell.swift */; };
+		A9383A96247FAF4C0046399E /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383A95247FAF4C0046399E /* UICollectionView+Extensions.swift */; };
+		A9383A98247FB5CD0046399E /* CollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383A97247FB5CD0046399E /* CollectionViewFlowLayout.swift */; };
+		A9383A9F247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383A9E247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift */; };
+		A9383AA2247FE12D0046399E /* FilterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383AA1247FE12D0046399E /* FilterProvider.swift */; };
+		A9383AA6247FF9C90046399E /* PostGrotesk-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9383AA5247FF9C90046399E /* PostGrotesk-Bold.otf */; };
+		A9383AB124811DB60046399E /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383AB024811DB60046399E /* Int+Extensions.swift */; };
+		A9383AB324811DF40046399E /* CIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383AB224811DF40046399E /* CIImage+Extension.swift */; };
 		A956D944247E791A00C18229 /* VideoCompositor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A956D943247E791A00C18229 /* VideoCompositor.swift */; };
 		A956D948247E7ECC00C18229 /* audio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A956D947247E7ECC00C18229 /* audio.mp3 */; };
 		A95E0BB6247EDDF400143250 /* video2.MOV in Resources */ = {isa = PBXBuildFile; fileRef = A95E0BB4247EDDF300143250 /* video2.MOV */; };
@@ -45,11 +49,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A90B6928247E927300AD22D6 /* RenderPipelineCompositor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPipelineCompositor.swift; sourceTree = "<group>"; };
-		A90B6929247E927300AD22D6 /* RenderPipeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderPipeline.swift; sourceTree = "<group>"; };
-		A90B692C247E934100AD22D6 /* MediaEditingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaEditingViewController.swift; sourceTree = "<group>"; };
-		A90B692E247E936B00AD22D6 /* PlayerItemPipelineDisplayLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerItemPipelineDisplayLink.swift; sourceTree = "<group>"; };
 		A915B540247F1B5C0000A35C /* video1.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video1.MOV; sourceTree = "<group>"; };
+		A9383A92247FAA890046399E /* PreviewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCollectionViewCell.swift; sourceTree = "<group>"; };
+		A9383A95247FAF4C0046399E /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
+		A9383A97247FB5CD0046399E /* CollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		A9383A9E247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSourceAndDelegate.swift; sourceTree = "<group>"; };
+		A9383AA1247FE12D0046399E /* FilterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterProvider.swift; sourceTree = "<group>"; };
+		A9383AA5247FF9C90046399E /* PostGrotesk-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PostGrotesk-Bold.otf"; sourceTree = "<group>"; };
+		A9383AB024811DB60046399E /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		A9383AB224811DF40046399E /* CIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Extension.swift"; sourceTree = "<group>"; };
 		A956D943247E791A00C18229 /* VideoCompositor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositor.swift; sourceTree = "<group>"; };
 		A956D947247E7ECC00C18229 /* audio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = audio.mp3; sourceTree = "<group>"; };
 		A95E0BB4247EDDF300143250 /* video2.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video2.MOV; sourceTree = "<group>"; };
@@ -94,17 +102,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A90B6927247E926A00AD22D6 /* renderPipeline */ = {
-			isa = PBXGroup;
-			children = (
-				A90B692C247E934100AD22D6 /* MediaEditingViewController.swift */,
-				A90B6929247E927300AD22D6 /* RenderPipeline.swift */,
-				A90B6928247E927300AD22D6 /* RenderPipelineCompositor.swift */,
-				A90B692E247E936B00AD22D6 /* PlayerItemPipelineDisplayLink.swift */,
-			);
-			path = renderPipeline;
-			sourceTree = "<group>";
-		};
 		A921BB09247D6FFE0047C5AB /* resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +110,32 @@
 				A956D947247E7ECC00C18229 /* audio.mp3 */,
 			);
 			path = resources;
+			sourceTree = "<group>";
+		};
+		A9383A94247FAF360046399E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A9383A95247FAF4C0046399E /* UICollectionView+Extensions.swift */,
+				A9383AB024811DB60046399E /* Int+Extensions.swift */,
+				A9383AB224811DF40046399E /* CIImage+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A9383AA0247FE1220046399E /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				A9383AA1247FE12D0046399E /* FilterProvider.swift */,
+			);
+			path = Filters;
+			sourceTree = "<group>";
+		};
+		A9383AA3247FF9AA0046399E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A9383AA5247FF9C90046399E /* PostGrotesk-Bold.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		A98EE2CC247CE49D00BE96DF = {
@@ -136,6 +159,7 @@
 		A98EE2D7247CE49D00BE96DF /* strucc */ = {
 			isa = PBXGroup;
 			children = (
+				A9383AA3247FF9AA0046399E /* Fonts */,
 				A921BB09247D6FFE0047C5AB /* resources */,
 				A98EE2FD247D033800BE96DF /* Screens */,
 				A98EE2FA247D02E800BE96DF /* Core */,
@@ -161,6 +185,8 @@
 		A98EE2FA247D02E800BE96DF /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				A9383AA0247FE1220046399E /* Filters */,
+				A9383A94247FAF360046399E /* Extensions */,
 				A9F4DCDC247E603200D64341 /* Camera */,
 				A98EE2FB247D02F300BE96DF /* DI.swift */,
 				A9A17FEF247D075100D3C043 /* Routes.swift */,
@@ -200,7 +226,10 @@
 			isa = PBXGroup;
 			children = (
 				A9A17FFB247D63F400D3C043 /* PreviewViewController.swift */,
+				A9383A92247FAA890046399E /* PreviewCollectionViewCell.swift */,
 				A9A17FFD247D642700D3C043 /* PreviewViewModel.swift */,
+				A9383A97247FB5CD0046399E /* CollectionViewFlowLayout.swift */,
+				A9383A9E247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift */,
 			);
 			path = Preview;
 			sourceTree = "<group>";
@@ -216,7 +245,6 @@
 		A9F4DCDC247E603200D64341 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				A90B6927247E926A00AD22D6 /* renderPipeline */,
 				A9F4DCD5247E3A3E00D64341 /* VideoEditor.swift */,
 				A956D943247E791A00C18229 /* VideoCompositor.swift */,
 				A9A17FFF247D6A1C00D3C043 /* CameraRecorder.swift */,
@@ -307,6 +335,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9383AA6247FF9C90046399E /* PostGrotesk-Bold.otf in Resources */,
 				A956D948247E7ECC00C18229 /* audio.mp3 in Resources */,
 				A98EE2E5247CE49E00BE96DF /* LaunchScreen.storyboard in Resources */,
 				A98EE2E2247CE49E00BE96DF /* Assets.xcassets in Resources */,
@@ -350,23 +379,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A90B692A247E927300AD22D6 /* RenderPipelineCompositor.swift in Sources */,
-				A90B692D247E934200AD22D6 /* MediaEditingViewController.swift in Sources */,
+				A9383AB324811DF40046399E /* CIImage+Extension.swift in Sources */,
 				A9A17FF5247D25E800D3C043 /* RecordButton.swift in Sources */,
 				A98EE2FC247D02F300BE96DF /* DI.swift in Sources */,
 				A956D944247E791A00C18229 /* VideoCompositor.swift in Sources */,
+				A9383AA2247FE12D0046399E /* FilterProvider.swift in Sources */,
 				A9A17FF0247D075100D3C043 /* Routes.swift in Sources */,
-				A90B692B247E927300AD22D6 /* RenderPipeline.swift in Sources */,
 				A9A17FFE247D642700D3C043 /* PreviewViewModel.swift in Sources */,
+				A9383A9F247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift in Sources */,
 				A98EE2DD247CE49D00BE96DF /* CameraViewController.swift in Sources */,
+				A9383A93247FAA890046399E /* PreviewCollectionViewCell.swift in Sources */,
+				A9383AB124811DB60046399E /* Int+Extensions.swift in Sources */,
 				A9A17FF3247D0FBF00D3C043 /* StruccError.swift in Sources */,
 				A98EE2D9247CE49D00BE96DF /* AppDelegate.swift in Sources */,
+				A9383A96247FAF4C0046399E /* UICollectionView+Extensions.swift in Sources */,
 				A9A18000247D6A1C00D3C043 /* CameraRecorder.swift in Sources */,
 				A9A17FEE247D06BE00D3C043 /* CameraViewModel.swift in Sources */,
 				A98EE2DB247CE49D00BE96DF /* SceneDelegate.swift in Sources */,
 				A9F4DCD6247E3A3E00D64341 /* VideoEditor.swift in Sources */,
 				A9A17FFC247D63F400D3C043 /* PreviewViewController.swift in Sources */,
-				A90B692F247E936B00AD22D6 /* PlayerItemPipelineDisplayLink.swift in Sources */,
+				A9383A98247FB5CD0046399E /* CollectionViewFlowLayout.swift in Sources */,
 				A9F4DCDE247E605A00D64341 /* StruccLayerInstruction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -532,7 +564,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.aarjinc.strucc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -553,7 +585,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.aarjinc.strucc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
