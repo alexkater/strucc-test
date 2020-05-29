@@ -18,7 +18,11 @@ class VideoEditor: VideoEditorProtocol {
 
     func createComposition(urls: [URL]) -> CompositionFuture {
         
-        CompositionFuture { promise in
+        CompositionFuture { [weak self] promise in
+            guard let strongSelf = self else {
+                promise(.failure(.selfDeinitialized))
+                return
+            }
 
             let composition = AVMutableComposition()
             let videoComposition = AVMutableVideoComposition()
@@ -50,30 +54,16 @@ class VideoEditor: VideoEditorProtocol {
                 let videoTrack = indice.isOdd ? videoTrackOne: videoTrackTwo
                 let audioTrack = indice.isOdd ? audioTrackOne: audioTrackTwo
 
-                guard let videoAssetTrack = avAsset.tracks(withMediaType: .video).first,
-                    let audioAssetTrack = avAsset.tracks(withMediaType: .audio).first
-                    else {
-                        promise(.failure(.cantTakeAVAssetTracks))
-                        return
-                }
-
-                let timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
-
+                // TODO: @aarjonilla Added func
                 do {
-                    try videoTrack.insertTimeRange(timeRange, of: videoAssetTrack, at: .zero)
-                    try audioTrack.insertTimeRange(timeRange, of: audioAssetTrack, at: .zero)
+                    try strongSelf.addAssetToTrack(avAsset, videoTrack: videoTrack, audioTrack: audioTrack, duration: minDurationTime)
                 } catch {
-                    promise(.failure(.cantInsertTimeRange))
+                    promise(.failure(.cantTakeAVAssetTracks))
+                    return
                 }
             }
 
-            instructionOne.timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
-            instructionTwo.timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
-
-            let layerInstructionOne = StruccLayerInstruction(type: .background, assetTrack: videoTrackOne)
-            let layerInstructionTwo = StruccLayerInstruction(type: .foreground, assetTrack: videoTrackTwo)
-
-            instructionOne.layerInstructions = [layerInstructionOne, layerInstructionTwo]
+            strongSelf.addInstructions(instructionOne, minDurationTime, instructionTwo, videoTrackOne, videoTrackTwo)
 
             videoComposition.frameDuration = CMTime(seconds: 1/60, preferredTimescale: 60)
             videoComposition.instructions = [instructionOne]
@@ -83,5 +73,30 @@ class VideoEditor: VideoEditorProtocol {
             let returnComposition = (composition, videoComposition)
             promise(.success(returnComposition))
         }
+    }
+}
+
+private extension VideoEditor {
+
+    func addAssetToTrack(_ avAsset: AVAsset, videoTrack: AVMutableCompositionTrack,
+                         audioTrack: AVMutableCompositionTrack, duration: CMTime) throws {
+        guard let videoAssetTrack = avAsset.tracks(withMediaType: .video).first,
+            let audioAssetTrack = avAsset.tracks(withMediaType: .audio).first
+            else { throw StruccError.cantTakeAVAssetTracks }
+
+        let timeRange = CMTimeRange(start: .zero, duration: duration)
+
+        try videoTrack.insertTimeRange(timeRange, of: videoAssetTrack, at: .zero)
+        try audioTrack.insertTimeRange(timeRange, of: audioAssetTrack, at: .zero)
+    }
+
+    func addInstructions(_ instructionOne: AVMutableVideoCompositionInstruction, _ minDurationTime: CMTime, _ instructionTwo: AVMutableVideoCompositionInstruction, _ videoTrackOne: AVMutableCompositionTrack, _ videoTrackTwo: AVMutableCompositionTrack) {
+        instructionOne.timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
+        instructionTwo.timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
+
+        let layerInstructionOne = StruccLayerInstruction(type: .background, assetTrack: videoTrackOne)
+        let layerInstructionTwo = StruccLayerInstruction(type: .foreground, assetTrack: videoTrackTwo)
+
+        instructionOne.layerInstructions = [layerInstructionOne, layerInstructionTwo]
     }
 }
