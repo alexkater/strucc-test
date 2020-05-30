@@ -7,4 +7,6 @@ Video editor application
 
 Written in full native Swift
 
+
+
 ![](strucc.gif)
