@@ -12,7 +12,8 @@ import Foundation
 final class FilterProviderMock: FilterProviderProtocol {
 
     var filters: [Filter] = [
-        Filter(name: "Test", imageName: "Test", filter: nil)
+        Filter(name: "Test", imageName: "Test", filter: nil),
+        Filter(name: "Test2", imageName: "Test2", filter: nil)
     ]
 
     var selectedFilter: Filter?

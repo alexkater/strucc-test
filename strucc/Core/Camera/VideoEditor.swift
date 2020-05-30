@@ -26,8 +26,7 @@ class VideoEditor: VideoEditorProtocol {
 
             let composition = AVMutableComposition()
             let videoComposition = AVMutableVideoComposition()
-            let instructionOne = AVMutableVideoCompositionInstruction()
-            let instructionTwo = AVMutableVideoCompositionInstruction()
+            let instruction = VideoCompositionInstruction()
             videoComposition.customVideoCompositorClass = VideoCompositor.self
 
             guard
@@ -54,7 +53,6 @@ class VideoEditor: VideoEditorProtocol {
                 let videoTrack = indice.isOdd ? videoTrackOne: videoTrackTwo
                 let audioTrack = indice.isOdd ? audioTrackOne: audioTrackTwo
 
-                // TODO: @aarjonilla Added func
                 do {
                     try strongSelf.addAssetToTrack(avAsset, videoTrack: videoTrack, audioTrack: audioTrack, duration: minDurationTime)
                 } catch {
@@ -63,10 +61,10 @@ class VideoEditor: VideoEditorProtocol {
                 }
             }
 
-            strongSelf.addInstructions(instructionOne, minDurationTime, instructionTwo, videoTrackOne, videoTrackTwo)
+            strongSelf.addInstructions(instruction, minDurationTime, videoTrackOne, videoTrackTwo)
 
             videoComposition.frameDuration = CMTime(seconds: 1/60, preferredTimescale: 60)
-            videoComposition.instructions = [instructionOne]
+            videoComposition.instructions = [instruction]
                 .sorted(by: { $0.timeRange.duration.seconds < $1.timeRange.duration.seconds })
             videoComposition.renderSize = CGSize(width: 1080, height: 1920)
 
@@ -90,13 +88,12 @@ private extension VideoEditor {
         try audioTrack.insertTimeRange(timeRange, of: audioAssetTrack, at: .zero)
     }
 
-    func addInstructions(_ instructionOne: AVMutableVideoCompositionInstruction, _ minDurationTime: CMTime, _ instructionTwo: AVMutableVideoCompositionInstruction, _ videoTrackOne: AVMutableCompositionTrack, _ videoTrackTwo: AVMutableCompositionTrack) {
-        instructionOne.timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
-        instructionTwo.timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
+    func addInstructions(_ instruction: VideoCompositionInstruction, _ minDurationTime: CMTime, _ videoTrackOne: AVMutableCompositionTrack, _ videoTrackTwo: AVMutableCompositionTrack) {
+        instruction.timeRange = CMTimeRange(start: .zero, duration: minDurationTime)
 
-        let layerInstructionOne = StruccLayerInstruction(type: .background, assetTrack: videoTrackOne)
-        let layerInstructionTwo = StruccLayerInstruction(type: .foreground, assetTrack: videoTrackTwo)
+        let layerInstructionOne = StruccLayerInstruction(type: .backgroundFiltered, assetTrack: videoTrackOne)
+        let layerInstructionTwo = StruccLayerInstruction(type: .foregroundCropped, assetTrack: videoTrackTwo)
 
-        instructionOne.layerInstructions = [layerInstructionOne, layerInstructionTwo]
+        instruction.layerInstructions = [layerInstructionOne, layerInstructionTwo]
     }
 }

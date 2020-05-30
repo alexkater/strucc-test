@@ -10,11 +10,15 @@ import Foundation
 import CoreImage
 import CoreImage.CIFilterBuiltins
 
-struct Filter {
+struct Filter: Equatable {
 
     let name: String
     let imageName: String
     let filter: FilterFunc?
+
+    static func == (lhs: Filter, rhs: Filter) -> Bool {
+        return lhs.name == rhs.name && lhs.imageName == rhs.imageName
+    }
 }
 
 protocol FilterProviderProtocol {

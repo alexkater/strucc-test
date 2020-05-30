@@ -81,7 +81,7 @@ class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
                     return
                 }
 
-                guard let instruction = request.videoCompositionInstruction as? AVVideoCompositionInstruction else {
+                guard let instruction = request.videoCompositionInstruction as? VideoCompositionInstruction else {
                     request.finish(with: StruccError.noInstruction)
                     return
                 }
@@ -104,43 +104,26 @@ class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
     }
 
     func render(_ request: AVAsynchronousVideoCompositionRequest,
-                instruction: AVVideoCompositionInstruction,
+                instruction: VideoCompositionInstruction,
                 pixelBuffer: CVPixelBuffer) {
 
         let backgroundColor = CIColor(cgColor: UIColor.clear.cgColor)
         let contextExtent = CGRect(origin: CGPoint.zero, size: request.renderContext.size)
         let backgroundImage = CIImage(color: backgroundColor).cropped(to: contextExtent)
 
-        let composedImage = instruction.layerInstructions.reduce(backgroundImage, { (composedImage, instruction) -> CIImage in
+        let composedImage = instruction.layerInstructions
+            .reduce(backgroundImage, { (composedImage, instruction) -> CIImage in
             guard let layerImageBuffer = request.sourceFrame(byTrackID: instruction.trackID) else {
                 request.finish(withComposedVideoFrame: pixelBuffer)
                 return composedImage
-            }
+                }
 
-            let transformedImage = CIImage(cvPixelBuffer: layerImageBuffer)
-                .transformed(by: request.renderContext.renderTransform)
-                .applying(orientationTransform: .init(rotationAngle: 3 * .pi / 2), mirrored: false)
+                let transformedImage = CIImage(cvPixelBuffer: layerImageBuffer)
+                    .transformed(by: request.renderContext.renderTransform)
+                    .applying(orientationTransform: .init(rotationAngle: 3 * .pi / 2), mirrored: false)
 
-            if instruction.trackID == 1 {
-
-                guard let filter = filterProvider.selectedFilter?.filter else { return transformedImage }
-
-                return filter(transformedImage)?.composited(over: composedImage) ?? backgroundImage
-
-            } else {
-
-                let cropped = transformedImage
-                    .transformed(by: CGAffineTransform(scaleX: 0.6, y: 0.6))
-                    .transformed(by: CGAffineTransform(translationX: contextExtent.width * 0.2, y: contextExtent.height * 0.2))
-                let filter = CIFilter.colorMatrix()
-                let overlayRgba: [CGFloat] = [0, 0, 0, 0.5]
-                let vector = CIVector(values: overlayRgba, count: 4)
-                filter.aVector = vector
-                filter.inputImage = cropped
-                let filtered = filter.outputImage
-                return filtered?.composited(over: composedImage) ?? backgroundImage
-            }
-        })
+                return instruction.apply(image: transformedImage, composedImage: composedImage, contextExtent: contextExtent) ?? backgroundImage
+            })
 
         imageContext.render(composedImage, to: pixelBuffer)
         request.finish(withComposedVideoFrame: pixelBuffer)

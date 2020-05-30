@@ -8,13 +8,15 @@
 
 import UIKit
 
-enum Routes: Equatable {
+enum Route: Equatable {
     case camera
     case preview(urls: [URL])
 
     var controller: UIViewController {
         switch self {
-        case .camera: return CameraViewController()
+        case .camera:
+            let viewModel = CameraViewModel()
+            return CameraViewController(viewModel: viewModel)
         case .preview(let urls):
             let viewModel = PreviewViewModel(urls: urls)
             return PreviewViewController(viewModel: viewModel)

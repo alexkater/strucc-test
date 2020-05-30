@@ -63,7 +63,7 @@ class CameraViewModelTests: XCTestCase {
             .navigate
             .dropFirst()
             .sink { (route) in
-                XCTAssertEqual(route, Routes.preview(urls: urls))
+                XCTAssertEqual(route, Route.preview(urls: urls))
                 expectationRotueReceived.fulfill()
         }
         .store(in: &bindings)
@@ -76,5 +76,20 @@ class CameraViewModelTests: XCTestCase {
         viewModel.recordButtonAction()
 
         wait(for: [expectationRotueReceived], timeout: 1)
+    }
+
+    func testViewAppear() {
+        viewModel.viewAppear()
+        XCTAssertEqual(cameraRecorder.startSessionCalls, 1)
+    }
+
+    func testViewDisappear() {
+        viewModel.viewDisappear()
+        XCTAssertEqual(cameraRecorder.stopSessionCalls, 1)
+    }
+
+    func testSwitchCamera() {
+        viewModel.switchCamera()
+        XCTAssertEqual(cameraRecorder.switchCameraCalls, 1)
     }
 }

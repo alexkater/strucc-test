@@ -51,12 +51,13 @@ final class TransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning 
             } else {
                 let xScaleFactor = finalFrame.width / recorderView.frame.width
                 let yScaleFactor = finalFrame.height / recorderView.frame.height
+
                 let scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
-                recorderView.backgroundColor = .clear
                 recorderView.transform = scaleTransform
             }
+
+            recorderView.backgroundColor = strongSelf.presenting ? .red : .clear
             recorderView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-            recorderView.layer.cornerRadius = !strongSelf.presenting ? 0 : buttonRadius
             recorderView.alpha = strongSelf.presenting ? 1:0
         }, completion: { _ in
           transitionContext.completeTransition(true)

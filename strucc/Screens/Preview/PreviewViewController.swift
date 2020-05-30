@@ -66,7 +66,6 @@ private extension PreviewViewController {
 
         closeButton = UIButton()
         closeButton.setImage(#imageLiteral(resourceName: "Exit.pdf"), for: .normal)
-        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
 
         [playerView, collectionview, closeButton].forEach { view.addSubview($0) }
 
@@ -78,18 +77,12 @@ private extension PreviewViewController {
 
         playerView.alpha = 0
 
+        #if DEBUG
+        player.volume = 0
+        #endif
         UIView.animate(withDuration: 1) {
             self.playerView.alpha = 1
         }
-    }
-
-    @objc func closeButtonTapped() {
-        dismiss(animated: true, completion: { [weak self] in
-            self?.player.pause()
-            self?.bindings.forEach { $0.cancel() }
-            guard let observer = self?.inifiteLoopObserver else { return }
-            NotificationCenter.default.removeObserver(observer, name: .AVPlayerItemDidPlayToEndTime, object: nil)
-        })
     }
 
     func createCollectionView() -> UICollectionView {
@@ -122,7 +115,7 @@ private extension PreviewViewController {
         [
             collectionview.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionview.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionview.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 11),
+            collectionview.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -11),
             collectionview.heightAnchor.constraint(equalToConstant: 110)
         ]
             .active()
@@ -136,6 +129,15 @@ private extension PreviewViewController {
     }
 
     func setupBindings() {
+
+        closeButton.publisher(for: .touchUpInside).sink { [weak self] (_) in
+            self?.player.pause()
+            self?.dismiss(animated: true, completion: {
+                self?.bindings.forEach { $0.cancel() }
+                guard let observer = self?.inifiteLoopObserver else { return }
+                NotificationCenter.default.removeObserver(observer, name: .AVPlayerItemDidPlayToEndTime, object: nil)
+            })
+        }.store(in: &bindings)
 
         viewModel.composition
             .delay(for: 0.3, scheduler: RunLoop.main)

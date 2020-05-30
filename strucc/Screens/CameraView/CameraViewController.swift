@@ -12,17 +12,18 @@ import AVFoundation
 
 class CameraViewController: UIViewController {
 
-    private var viewModel: CameraViewModelProtocol = CameraViewModel()
+    private var viewModel: CameraViewModelProtocol
     private var cameraView: UIView!
-    private var recordButton: RecordButton!
     private var previewLayer: AVCaptureVideoPreviewLayer!
     private var transition: TransitionAnimator!
+    var recordButton: RecordButton!
+    var switchCameraButton: UIButton!
 
     private var bindings = Set<AnyCancellable>()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    init(viewModel: CameraViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
         setupView()
         setupConstraints()
         setupBindings()
@@ -33,6 +34,11 @@ class CameraViewController: UIViewController {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(longGestureTap))
         cameraView.addGestureRecognizer(longPressGesture)
         #endif
+    }
+
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -68,20 +74,26 @@ private extension CameraViewController {
         recordButton = RecordButton(width: 74)
         recordButton.backgroundColor = .clear
 
-        [cameraView, recordButton].forEach { view.addSubview($0) }
+        switchCameraButton = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 48, height: 48)))
+        switchCameraButton.setImage(#imageLiteral(resourceName: "FlipCamera.pdf"), for: .normal)
+
+        [cameraView, recordButton, switchCameraButton].forEach { view.addSubview($0) }
     }
 
     func setupConstraints() {
-        recordButton.translatesAutoresizingMaskIntoConstraints = false
+        [recordButton, switchCameraButton].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
 
-        let constraints = [
+        [
             recordButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             recordButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -32),
             recordButton.widthAnchor.constraint(equalToConstant: 74),
             recordButton.heightAnchor.constraint(equalToConstant: 74)
-        ]
+            ].active()
 
-        constraints.forEach { $0.isActive = true }
+        [
+            switchCameraButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            switchCameraButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25)
+        ].active()
 
         view.layoutSubviews()
     }
@@ -93,6 +105,13 @@ private extension CameraViewController {
             .throttle(for: 1.5, scheduler: RunLoop.main, latest: false)
             .sink { [weak self] (_) in
                 self?.viewModel.recordButtonAction()
+        }
+        .store(in: &bindings)
+
+        switchCameraButton
+            .publisher(for: .touchUpInside)
+            .sink { [weak self] (_) in
+                self?.viewModel.switchCamera()
         }
         .store(in: &bindings)
 
@@ -117,7 +136,7 @@ private extension CameraViewController {
             .store(in: &bindings)
     }
 
-    func presentRoute(_ route: Routes) {
+    func presentRoute(_ route: Route) {
         let controller = route.controller
         controller.modalPresentationStyle = .currentContext
         controller.transitioningDelegate = self

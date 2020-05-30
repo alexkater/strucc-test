@@ -13,6 +13,10 @@ import AVFoundation
 
 final class CameraRecorderMock: CameraRecorderProtocol {
 
+    var startSessionCalls = 0
+    var stopSessionCalls = 0
+    var switchCameraCalls = 0
+
     lazy var session: AnyPublisher<AVCaptureSession, Never> = mutableSession.eraseToAnyPublisher()
     var mutableSession = CurrentValueSubject<AVCaptureSession, Never>(AVCaptureSession())
 
@@ -28,5 +32,17 @@ final class CameraRecorderMock: CameraRecorderProtocol {
 
     func reset() {
         videosUrls.removeAll()
+    }
+
+    func startSession() {
+        startSessionCalls += 1
+    }
+
+    func stopSession() {
+        stopSessionCalls += 1
+    }
+
+    func switchCamera() {
+        switchCameraCalls += 1
     }
 }
