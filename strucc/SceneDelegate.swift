@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = scene as? UIWindowScene else { return }
 
-        let rootController = Routes.camera.controller
+        let rootController = Route.camera.controller
 
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = rootController

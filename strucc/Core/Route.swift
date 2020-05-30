@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum Routes: Equatable {
+enum Route: Equatable {
     case camera
     case preview(urls: [URL])
 

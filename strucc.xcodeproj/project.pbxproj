@@ -23,6 +23,9 @@
 		A9383AC1248160320046399E /* CombineCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383AC0248160320046399E /* CombineCompatible.swift */; };
 		A9383AC3248170410046399E /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9383AC2248170410046399E /* TransitionAnimator.swift */; };
 		A9402757248253D800624EFF /* VideoCompositorInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9402756248253D800624EFF /* VideoCompositorInstruction.swift */; };
+		A94027592482661600624EFF /* VideoEditorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94027582482661600624EFF /* VideoEditorMock.swift */; };
+		A940275C24826DF500624EFF /* FilterProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940275B24826DF500624EFF /* FilterProviderTests.swift */; };
+		A940275E24826FCF00624EFF /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940275D24826FCF00624EFF /* RouteTests.swift */; };
 		A956D944247E791A00C18229 /* VideoCompositor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A956D943247E791A00C18229 /* VideoCompositor.swift */; };
 		A95E0BB6247EDDF400143250 /* video2.MOV in Resources */ = {isa = PBXBuildFile; fileRef = A95E0BB4247EDDF300143250 /* video2.MOV */; };
 		A98EE2D9247CE49D00BE96DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98EE2D8247CE49D00BE96DF /* AppDelegate.swift */; };
@@ -31,7 +34,7 @@
 		A98EE2E2247CE49E00BE96DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98EE2E1247CE49E00BE96DF /* Assets.xcassets */; };
 		A98EE2E5247CE49E00BE96DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A98EE2E3247CE49E00BE96DF /* LaunchScreen.storyboard */; };
 		A9A17FEE247D06BE00D3C043 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A17FED247D06BE00D3C043 /* CameraViewModel.swift */; };
-		A9A17FF0247D075100D3C043 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A17FEF247D075100D3C043 /* Routes.swift */; };
+		A9A17FF0247D075100D3C043 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A17FEF247D075100D3C043 /* Route.swift */; };
 		A9A17FF3247D0FBF00D3C043 /* StruccError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A17FF2247D0FBF00D3C043 /* StruccError.swift */; };
 		A9A17FF5247D25E800D3C043 /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A17FF4247D25E800D3C043 /* RecordButton.swift */; };
 		A9A17FF8247D340700D3C043 /* CameraViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A17FF7247D340700D3C043 /* CameraViewModelTests.swift */; };
@@ -70,6 +73,9 @@
 		A9383AC0248160320046399E /* CombineCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineCompatible.swift; sourceTree = "<group>"; };
 		A9383AC2248170410046399E /* TransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
 		A9402756248253D800624EFF /* VideoCompositorInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositorInstruction.swift; sourceTree = "<group>"; };
+		A94027582482661600624EFF /* VideoEditorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditorMock.swift; sourceTree = "<group>"; };
+		A940275B24826DF500624EFF /* FilterProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterProviderTests.swift; sourceTree = "<group>"; };
+		A940275D24826FCF00624EFF /* RouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
 		A956D943247E791A00C18229 /* VideoCompositor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositor.swift; sourceTree = "<group>"; };
 		A95E0BB4247EDDF300143250 /* video2.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video2.MOV; sourceTree = "<group>"; };
 		A98EE2D5247CE49D00BE96DF /* strucc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = strucc.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,7 +88,7 @@
 		A98EE2EB247CE49E00BE96DF /* struccTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = struccTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A98EE2F1247CE49E00BE96DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9A17FED247D06BE00D3C043 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
-		A9A17FEF247D075100D3C043 /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
+		A9A17FEF247D075100D3C043 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		A9A17FF2247D0FBF00D3C043 /* StruccError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StruccError.swift; sourceTree = "<group>"; };
 		A9A17FF4247D25E800D3C043 /* RecordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		A9A17FF7247D340700D3C043 /* CameraViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModelTests.swift; sourceTree = "<group>"; };
@@ -156,6 +162,15 @@
 			path = "Combine+UIKit";
 			sourceTree = "<group>";
 		};
+		A940275A24826DC200624EFF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A940275B24826DF500624EFF /* FilterProviderTests.swift */,
+				A940275D24826FCF00624EFF /* RouteTests.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		A98EE2CC247CE49D00BE96DF = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +208,7 @@
 		A98EE2EE247CE49E00BE96DF /* struccTests */ = {
 			isa = PBXGroup;
 			children = (
+				A940275A24826DC200624EFF /* Services */,
 				A9F4DCD9247E5A4C00D64341 /* Mocks */,
 				A9A17FF6247D33EB00D3C043 /* View Models */,
 				A98EE2F1247CE49E00BE96DF /* Info.plist */,
@@ -207,7 +223,7 @@
 				A9383AA0247FE1220046399E /* Filters */,
 				A9383A94247FAF360046399E /* Extensions */,
 				A9F4DCDC247E603200D64341 /* Camera */,
-				A9A17FEF247D075100D3C043 /* Routes.swift */,
+				A9A17FEF247D075100D3C043 /* Route.swift */,
 				A9A17FF2247D0FBF00D3C043 /* StruccError.swift */,
 				A9383ABA248125150046399E /* GlobalTypeAlias.swift */,
 			);
@@ -259,6 +275,7 @@
 			isa = PBXGroup;
 			children = (
 				A9F4DCDA247E5A5600D64341 /* CameraRecorderMock.swift */,
+				A94027582482661600624EFF /* VideoEditorMock.swift */,
 				A9383AB62481214D0046399E /* FilterProviderMock.swift */,
 			);
 			path = Mocks;
@@ -405,7 +422,7 @@
 				A9A17FF5247D25E800D3C043 /* RecordButton.swift in Sources */,
 				A956D944247E791A00C18229 /* VideoCompositor.swift in Sources */,
 				A9383AA2247FE12D0046399E /* FilterProvider.swift in Sources */,
-				A9A17FF0247D075100D3C043 /* Routes.swift in Sources */,
+				A9A17FF0247D075100D3C043 /* Route.swift in Sources */,
 				A9A17FFE247D642700D3C043 /* PreviewViewModel.swift in Sources */,
 				A9383A9F247FBD310046399E /* CollectionViewDataSourceAndDelegate.swift in Sources */,
 				A9383ABB248125150046399E /* GlobalTypeAlias.swift in Sources */,
@@ -434,8 +451,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9383AB5248121020046399E /* PreviewViewModelTests.swift in Sources */,
+				A94027592482661600624EFF /* VideoEditorMock.swift in Sources */,
+				A940275E24826FCF00624EFF /* RouteTests.swift in Sources */,
 				A9F4DCDB247E5A5600D64341 /* CameraRecorderMock.swift in Sources */,
 				A9383AB72481214D0046399E /* FilterProviderMock.swift in Sources */,
+				A940275C24826DF500624EFF /* FilterProviderTests.swift in Sources */,
 				A9A17FF8247D340700D3C043 /* CameraViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
