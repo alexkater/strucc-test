@@ -14,7 +14,9 @@ enum Routes: Equatable {
 
     var controller: UIViewController {
         switch self {
-        case .camera: return CameraViewController()
+        case .camera:
+            let viewModel = CameraViewModel()
+            return CameraViewController(viewModel: viewModel)
         case .preview(let urls):
             let viewModel = PreviewViewModel(urls: urls)
             return PreviewViewController(viewModel: viewModel)

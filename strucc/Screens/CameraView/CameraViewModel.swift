@@ -19,6 +19,7 @@ protocol CameraViewModelProtocol {
     func recordButtonAction()
     func viewAppear()
     func viewDisappear()
+    func switchCamera()
 }
 
 final class CameraViewModel: CameraViewModelProtocol {
@@ -48,6 +49,10 @@ final class CameraViewModel: CameraViewModelProtocol {
 
     func viewDisappear() {
         cameraRecorder.stopSession()
+    }
+
+    func switchCamera() {
+        cameraRecorder.switchCamera()
     }
 }
 

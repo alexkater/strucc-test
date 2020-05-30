@@ -25,6 +25,7 @@ protocol CameraRecorderProtocol {
     func reset()
     func startSession()
     func stopSession()
+    func switchCamera()
 }
 
 class CameraRecorder: NSObject, CameraRecorderProtocol {
@@ -37,20 +38,23 @@ class CameraRecorder: NSObject, CameraRecorderProtocol {
     lazy var isRecording: AnyPublisher<Bool, Never> = mutableIsRecording.eraseToAnyPublisher()
     private var mutableIsRecording = CurrentValueSubject<Bool, Never>(false)
 
-    private let cameraPosition: AVCaptureDevice.Position
+    private var cameraPosition: AVCaptureDevice.Position
     private let sampleBufferQueue = DispatchQueue(label: "com.aarjinc.strucc.SampleBuffer", qos: .userInitiated)
     private let movieOutput = AVCaptureMovieFileOutput()
-    private var activeInput: AVCaptureDeviceInput!
+    private var activeInput: AVCaptureDeviceInput?
     var videosUrls: [URL] = []
 
     init(cameraPosition: AVCaptureDevice.Position = .back) {
         self.cameraPosition = cameraPosition
         super.init()
-        do {
-            try prepareSession()
-        } catch {
-            print(error)
-        }
+
+        #if !targetEnvironment(simulator)
+          do {
+              try prepareSession()
+          } catch {
+              print(error)
+          }
+        #endif
     }
 
     func reset() {
@@ -76,6 +80,16 @@ class CameraRecorder: NSObject, CameraRecorderProtocol {
             }
         }
     }
+
+    func switchCamera() {
+        cameraPosition = cameraPosition == .back ? .front: .back
+
+        do {
+            try prepareVideo()
+        } catch {
+            print(error)
+        }
+    }
 }
 
 private extension CameraRecorder {
@@ -91,14 +105,26 @@ private extension CameraRecorder {
     }
 
     func prepareVideo() throws {
+        captureSession.beginConfiguration()
         captureSession.sessionPreset = .hd1920x1080
 
-        let cameraDiscovery = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera, .builtInMicrophone], mediaType: .video, position: cameraPosition)
+        let cameraDiscovery = AVCaptureDevice
+            .DiscoverySession(deviceTypes:
+                [.builtInDualCamera,
+                 .builtInWideAngleCamera,
+                 .builtInMicrophone],
+                              mediaType: .video, position: cameraPosition)
+
         guard let camera = cameraDiscovery.devices.first
             else { throw CameraViewError.cameraBuild }
 
         do {
             let input = try AVCaptureDeviceInput(device: camera)
+
+            if let activeInput = activeInput {
+                captureSession.removeInput(activeInput)
+            }
+
             if captureSession.canAddInput(input) {
                 captureSession.addInput(input)
                 activeInput = input
@@ -106,6 +132,8 @@ private extension CameraRecorder {
         } catch {
             throw error
         }
+
+        captureSession.commitConfiguration()
     }
 
     func prepareAudio() throws {
