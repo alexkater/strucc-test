@@ -1,6 +1,6 @@
 Video editor application
 
-## What's done?
+## What's done? ![PR](https://github.com/alexkater/strucc-test/workflows/PR/badge.svg)
 
 ### Camera screen
 ### Simple editor that blends two videos

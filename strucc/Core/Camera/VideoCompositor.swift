@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import CoreImage
 import CoreImage.CIFilterBuiltins
 
 class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {

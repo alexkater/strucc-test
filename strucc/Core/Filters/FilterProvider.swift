@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreImage
 import CoreImage.CIFilterBuiltins
 
 struct Filter: Equatable {

@@ -26,6 +26,7 @@
 		A94027592482661600624EFF /* VideoEditorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94027582482661600624EFF /* VideoEditorMock.swift */; };
 		A940275C24826DF500624EFF /* FilterProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940275B24826DF500624EFF /* FilterProviderTests.swift */; };
 		A940275E24826FCF00624EFF /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A940275D24826FCF00624EFF /* RouteTests.swift */; };
+		A94027602482720B00624EFF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A940275F2482720B00624EFF /* README.md */; };
 		A956D944247E791A00C18229 /* VideoCompositor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A956D943247E791A00C18229 /* VideoCompositor.swift */; };
 		A95E0BB6247EDDF400143250 /* video2.MOV in Resources */ = {isa = PBXBuildFile; fileRef = A95E0BB4247EDDF300143250 /* video2.MOV */; };
 		A98EE2D9247CE49D00BE96DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98EE2D8247CE49D00BE96DF /* AppDelegate.swift */; };
@@ -76,6 +77,7 @@
 		A94027582482661600624EFF /* VideoEditorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditorMock.swift; sourceTree = "<group>"; };
 		A940275B24826DF500624EFF /* FilterProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterProviderTests.swift; sourceTree = "<group>"; };
 		A940275D24826FCF00624EFF /* RouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
+		A940275F2482720B00624EFF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		A956D943247E791A00C18229 /* VideoCompositor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCompositor.swift; sourceTree = "<group>"; };
 		A95E0BB4247EDDF300143250 /* video2.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = video2.MOV; sourceTree = "<group>"; };
 		A98EE2D5247CE49D00BE96DF /* strucc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = strucc.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,6 +194,7 @@
 		A98EE2D7247CE49D00BE96DF /* strucc */ = {
 			isa = PBXGroup;
 			children = (
+				A940275F2482720B00624EFF /* README.md */,
 				A9383AA3247FF9AA0046399E /* Fonts */,
 				A921BB09247D6FFE0047C5AB /* Debug */,
 				A98EE2FD247D033800BE96DF /* Screens */,
@@ -375,6 +378,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A94027602482720B00624EFF /* README.md in Resources */,
 				A9383AA6247FF9C90046399E /* PostGrotesk-Bold.otf in Resources */,
 				A98EE2E5247CE49E00BE96DF /* LaunchScreen.storyboard in Resources */,
 				A98EE2E2247CE49E00BE96DF /* Assets.xcassets in Resources */,
