@@ -17,3 +17,4 @@ I will add the export composition and more cool filters
 
 ## What about testing?
 I added a bunch of unit tests where I consider is important and feasible to test, as viewModels and services.  
+You can find Xcov report on Github Actions Artifacts. Now should be around 80%
