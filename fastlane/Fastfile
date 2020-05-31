@@ -22,11 +22,5 @@ platform :ios do
     scan(
       code_coverage: true
     )
-
-    xcov(
-      project: 'strucc.xcodeproj',
-      output_directory: "xcov_output",
-      only_project_targets: true,
-    )
   end
 end

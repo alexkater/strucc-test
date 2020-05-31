@@ -15,7 +15,9 @@ jobs:
       - name: Swiftlint
         run: 'swiftlint --strict'
       - name: Run tests
-        run: fastlane tests
+        run: bundle exec fastlane tests
+      - name: Run xcov
+        run: bundle exec xcov
       - name: Upload XCOV report
         uses: actions/upload-artifact@v1
         with:
