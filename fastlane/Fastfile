@@ -24,6 +24,7 @@ platform :ios do
     )
 
     xcov(
+      project: 'strucc.xcodeproj',
       output_directory: "xcov_output",
       only_project_targets: true,
     )
