@@ -19,7 +19,7 @@ jobs:
       - name: Run tests
         run: bundle exec fastlane tests
       - name: Run xcov
-        run: bundle exec xcov --output_directory 'xcov_output/'
+        run: bundle exec xcov --output_directory 'xcov_output/' -x '.xcovignore'
       - name: Upload XCOV report
         uses: actions/upload-artifact@v1
         with:
