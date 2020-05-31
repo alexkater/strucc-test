@@ -10,9 +10,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Gem install
+        run:  bundle install
       - name: Install Swiftlint
         run:  brew install swiftlint
       - name: Swiftlint
         run: 'swiftlint --strict'
       - name: Run tests
-        run: fastlane tests
+        run: bundle exec fastlane tests
+      - name: Run xcov
+        run: bundle exec xcov --output_directory 'xcov_output/' -x '.xcovignore'
+      - name: Upload XCOV report
+        uses: actions/upload-artifact@v1
+        with:
+          name: XCOV report
+          path: xcov_output/

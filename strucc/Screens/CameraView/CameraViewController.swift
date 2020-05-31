@@ -54,7 +54,7 @@ class CameraViewController: UIViewController {
     #if DEBUG
     @objc func longGestureTap(gestureReconizer: UILongPressGestureRecognizer) {
         guard gestureReconizer.state == .ended else { return }
-        presentRoute(.preview(urls: urlsMock))
+        presentRoute(.preview(urls: TestVideoMock.defaultUrls))
     }
     #endif
 }
@@ -134,6 +134,20 @@ private extension CameraViewController {
                 self?.presentRoute(value)
             })
             .store(in: &bindings)
+
+            viewModel.error
+                .compactMap { $0 }
+                .sink(receiveValue: { [weak self] (error) in
+                    self?.show(error: error)
+                })
+                .store(in: &bindings)
+
+        viewModel.helperText
+            .compactMap { $0 }
+            .sink(receiveValue: { [weak self] (text) in
+                self?.addAnimatedText(text)
+            })
+            .store(in: &bindings)
     }
 
     func presentRoute(_ route: Route) {
@@ -155,5 +169,38 @@ extension CameraViewController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.presenting = false
         return transition
+    }
+}
+
+private extension CameraViewController {
+
+    func addAnimatedText(_ text: String) {
+        let label = UILabel()
+        label.text = text
+        label.font = UIFont.postGrotestBold(30)
+        label.textColor = .white
+        label.alpha = 0
+
+        view.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        [
+            label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ].active()
+
+        UIView.animate(withDuration: 1, animations: {
+            label.frame.size = CGSize(width: self.view.frame.width, height: 100)
+            label.alpha = 1
+        }) { (_) in
+            UIView.animate(withDuration: 0.5,
+                           delay: 1,
+                           animations: {
+                let scaleTransform = CGAffineTransform(scaleX: 4, y: 4)
+                label.transform = scaleTransform
+                label.alpha = 0
+            }, completion: { _ in
+                label.removeFromSuperview()
+            })
+        }
     }
 }

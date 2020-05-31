@@ -1,0 +1,11 @@
+# Exclude all files ending by "View.swift"
+- CIImage+Extension.swift
+- UIViewController+Error.swift
+- PreviewCollectionViewCell.swift
+- VideoCompositor.swift
+- CollectionViewFlowLayout.swift
+- TransitionAnimator.swift
+- CollectionViewDataSourceAndDelegate.swift
+- StruccLayerInstruction.swift
+- CameraRecorder.swift
+- Int+Extensions.swift

@@ -37,13 +37,6 @@ final class PreviewViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIView.animate(withDuration: 1) { [weak self] in
-            self?.view.backgroundColor = .clear
-        }
-    }
 }
 
 private extension PreviewViewController {
@@ -57,7 +50,6 @@ private extension PreviewViewController {
 
     func setupView() {
         navigationController?.setNavigationBarHidden(true, animated: false)
-        self.view.backgroundColor = .red
 
         playerView = UIView(frame: view.bounds)
         playerView.backgroundColor = .clear
@@ -153,19 +145,12 @@ private extension PreviewViewController {
         }
         .store(in: &bindings)
 
-        viewModel.error.sink(receiveValue: show(error:)).store(in: &bindings)
-    }
-
-    func show(error: String?) {
-        guard let error = error, !error.isEmpty else { return }
-        let alert = UIAlertController(title: "Really Sorry",
-                                      message: error, preferredStyle: .alert)
-        let defaultAction = UIAlertAction(title: "Ok I understand", style: .default) { [weak self] (_) in
-            self?.dismiss(animated: true, completion: nil)
-        }
-        alert.addAction(defaultAction)
-
-        present(alert, animated: true, completion: nil)
+        viewModel.error
+            .compactMap { $0 }
+            .sink(receiveValue: { [weak self] (error) in
+                self?.show(error: error)
+            })
+            .store(in: &bindings)
     }
 
     func updatePlayer(with composition: Composition) {

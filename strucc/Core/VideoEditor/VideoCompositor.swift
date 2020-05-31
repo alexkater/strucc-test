@@ -12,34 +12,8 @@ import CoreImage.CIFilterBuiltins
 
 class VideoCompositor: NSObject, AVFoundation.AVVideoCompositing {
 
-    private let filterProvider: FilterProviderProtocol
-
-    func getRandomFilter(seconds: Double, inputImage: CIImage) -> CIImage? {
-        // TODO: @aarjonilla check if makes sense to use non typed way
-        let filter: CIFilter & CIPhotoEffect
-        switch seconds {
-        case 0...2:
-            filter = CIFilter.photoEffectNoir()
-        case 2...5:
-            filter = CIFilter.photoEffectInstant()
-        case 5...9:
-            filter = CIFilter.photoEffectChrome()
-        default:
-            filter = CIFilter.photoEffectMono()
-        }
-
-        filter.inputImage = inputImage
-        return filter.outputImage
-    }
-
-    override public init() {
-        self.filterProvider = FilterProvider.shared
-        super.init()
-    }
-
-    static let colorMatrixFilter: CIFilter = {
-        return CIFilter(name: "CIColorMatrix")!
-    }()
+    /// I have to inject in this way, as VideoCompositor is called to .init() and I cannot edit the default contructor
+    var filterProvider: FilterProviderProtocol = FilterProvider.shared
 
     lazy var imageContext: CIContext = {
         return CIContext()

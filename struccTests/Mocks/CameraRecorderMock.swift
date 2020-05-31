@@ -16,6 +16,7 @@ final class CameraRecorderMock: CameraRecorderProtocol {
     var startSessionCalls = 0
     var stopSessionCalls = 0
     var switchCameraCalls = 0
+    var recordError, switchCameraError: CameraError?
 
     lazy var session: AnyPublisher<AVCaptureSession, Never> = mutableSession.eraseToAnyPublisher()
     var mutableSession = CurrentValueSubject<AVCaptureSession, Never>(AVCaptureSession())
@@ -25,9 +26,12 @@ final class CameraRecorderMock: CameraRecorderProtocol {
 
     var videosUrls: [URL] = []
 
-    func startOrStopRecording() {
-        print("startOrStopRecording")
-        mutableIsRecording.value = !mutableIsRecording.value
+    func startOrStopRecording() throws {
+        if let error = recordError {
+            throw error
+        } else {
+            mutableIsRecording.value = !mutableIsRecording.value
+        }
     }
 
     func reset() {
@@ -42,7 +46,11 @@ final class CameraRecorderMock: CameraRecorderProtocol {
         stopSessionCalls += 1
     }
 
-    func switchCamera() {
-        switchCameraCalls += 1
+    func switchCamera() throws {
+        if let error = switchCameraError {
+            throw error
+        } else {
+            switchCameraCalls += 1
+        }
     }
 }

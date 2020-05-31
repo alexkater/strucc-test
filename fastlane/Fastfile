@@ -19,6 +19,8 @@ platform :ios do
 
 
   lane :tests do
-    scan
+    scan(
+      code_coverage: true
+    )
   end
 end
