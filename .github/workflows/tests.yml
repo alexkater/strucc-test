@@ -16,3 +16,8 @@ jobs:
         run: 'swiftlint --strict'
       - name: Run tests
         run: fastlane tests
+      - name: Upload XCOV report
+        uses: actions/upload-artifact@v1
+        with:
+          name: XCOV report
+          path: xcov_output/

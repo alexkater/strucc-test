@@ -11,7 +11,7 @@ import AVFoundation
 import CoreImage
 import Combine
 
-enum CameraViewError: Error {
+enum CameraError: Error {
     case cameraBuild, audioBuild, impossibleCreateFileURL
 }
 
@@ -21,11 +21,11 @@ protocol CameraRecorderProtocol {
 
     var videosUrls: [URL] { get }
 
-    func startOrStopRecording()
+    func startOrStopRecording() throws
     func reset()
     func startSession()
     func stopSession()
-    func switchCamera()
+    func switchCamera() throws
 }
 
 class CameraRecorder: NSObject, CameraRecorderProtocol {
@@ -61,8 +61,8 @@ class CameraRecorder: NSObject, CameraRecorderProtocol {
         videosUrls.removeAll()
     }
 
-    func startOrStopRecording() {
-        mutableIsRecording.value ? stopRecording(): startRecording()
+    func startOrStopRecording() throws {
+        mutableIsRecording.value ? stopRecording(): try startRecording()
     }
 
     func startSession() {
@@ -81,14 +81,9 @@ class CameraRecorder: NSObject, CameraRecorderProtocol {
         }
     }
 
-    func switchCamera() {
+    func switchCamera() throws {
         cameraPosition = cameraPosition == .back ? .front: .back
-
-        do {
-            try prepareVideo()
-        } catch {
-            print(error)
-        }
+        try prepareVideo()
     }
 }
 
@@ -116,7 +111,7 @@ private extension CameraRecorder {
                               mediaType: .video, position: cameraPosition)
 
         guard let camera = cameraDiscovery.devices.first
-            else { throw CameraViewError.cameraBuild }
+            else { throw CameraError.cameraBuild }
 
         do {
             let input = try AVCaptureDeviceInput(device: camera)
@@ -138,7 +133,7 @@ private extension CameraRecorder {
 
     func prepareAudio() throws {
         guard let microphone = AVCaptureDevice.default(for: .audio)
-            else { throw CameraViewError.audioBuild }
+            else { throw CameraError.audioBuild }
 
         do {
             let micInput = try AVCaptureDeviceInput(device: microphone)
@@ -154,7 +149,7 @@ private extension CameraRecorder {
 // MARK: - Recording
 private extension CameraRecorder {
 
-    func startRecording() {
+    func startRecording() throws {
       if !movieOutput.isRecording {
         let connection = movieOutput.connection(with: .video)
         if connection?.isVideoOrientationSupported == true {
@@ -165,13 +160,8 @@ private extension CameraRecorder {
             connection?.preferredVideoStabilizationMode = .auto
         }
 
-        do {
-            let url = try getNewURL()
-            movieOutput.startRecording(to: url, recordingDelegate: self)
-        } catch {
-            // TODO: @aarjonilla Do something here with the error?
-            print(error)
-        }
+        let url = try getNewURL()
+        movieOutput.startRecording(to: url, recordingDelegate: self)
 
       } else {
         stopRecording()
@@ -186,7 +176,7 @@ private extension CameraRecorder {
 
     func getNewURL() throws -> URL {
         let directory = NSTemporaryDirectory()
-        guard !directory.isEmpty else { throw CameraViewError.impossibleCreateFileURL }
+        guard !directory.isEmpty else { throw CameraError.impossibleCreateFileURL }
         let path = directory.appending("\(Date().description)-strucc.mov")
         return URL(fileURLWithPath: path)
     }

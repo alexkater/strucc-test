@@ -92,4 +92,42 @@ class CameraViewModelTests: XCTestCase {
         viewModel.switchCamera()
         XCTAssertEqual(cameraRecorder.switchCameraCalls, 1)
     }
+
+    func testRecordThrowError() {
+        let expectation = XCTestExpectation(description: "Error received")
+
+        let error: CameraError = CameraError.cameraBuild
+        viewModel
+            .error
+            .dropFirst()
+            .sink { (errorString) in
+                XCTAssertEqual(errorString, error.localizedDescription)
+                expectation.fulfill()
+        }
+        .store(in: &bindings)
+
+        cameraRecorder.recordError = error
+        viewModel.recordButtonAction()
+
+        wait(for: [expectation], timeout: 1)
+    }
+
+    func testSwitchCameraThrowError() {
+        let expectation = XCTestExpectation(description: "Error received")
+
+        let error: CameraError = CameraError.cameraBuild
+        viewModel
+            .error
+            .dropFirst()
+            .sink { (errorString) in
+                XCTAssertEqual(errorString, error.localizedDescription)
+                expectation.fulfill()
+        }
+        .store(in: &bindings)
+
+        cameraRecorder.switchCameraError = error
+        viewModel.switchCamera()
+
+        wait(for: [expectation], timeout: 1)
+    }
 }

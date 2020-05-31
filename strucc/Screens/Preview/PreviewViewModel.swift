@@ -41,7 +41,7 @@ final class PreviewViewModel: PreviewViewModelProtocol {
         strongSelf.filterProvider.selectedFilter = strongSelf.filterProvider.filters[index]
     }
 
-    init(urls: [URL] = urlsMock,
+    init(urls: [URL] = TestVideoMock.defaultUrls,
          filterProvider: FilterProviderProtocol = FilterProvider.shared,
          videoEditor: VideoEditorProtocol = VideoEditor()
          ) {
@@ -67,19 +67,3 @@ final class PreviewViewModel: PreviewViewModelProtocol {
         }.store(in: &bindings)
     }
 }
-
-#if DEBUG
-let urlsMock = [
-    "video1",
-    "video2"
-    ]
-    .compactMap { videoName -> URL? in
-        guard let path = Bundle.main.path(forResource: videoName, ofType: "MOV") else {
-            debugPrint(" not found")
-            return nil
-        }
-        return URL(fileURLWithPath: path)
-}
-#else
-let urls = []
-#endif

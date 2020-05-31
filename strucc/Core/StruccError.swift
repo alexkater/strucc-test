@@ -14,6 +14,7 @@ enum StruccError: Error {
     /// Video Compositor Errors
     case noSourceTracks, noInstruction, cannotRenderPixelBuffer
 
+    /// TODO: Each case should have their description
     var description: String {
         switch self {
         default: return "Oooops! Something has happened"

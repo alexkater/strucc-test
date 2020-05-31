@@ -153,19 +153,12 @@ private extension PreviewViewController {
         }
         .store(in: &bindings)
 
-        viewModel.error.sink(receiveValue: show(error:)).store(in: &bindings)
-    }
-
-    func show(error: String?) {
-        guard let error = error, !error.isEmpty else { return }
-        let alert = UIAlertController(title: "Really Sorry",
-                                      message: error, preferredStyle: .alert)
-        let defaultAction = UIAlertAction(title: "Ok I understand", style: .default) { [weak self] (_) in
-            self?.dismiss(animated: true, completion: nil)
-        }
-        alert.addAction(defaultAction)
-
-        present(alert, animated: true, completion: nil)
+        viewModel.error
+            .compactMap { $0 }
+            .sink(receiveValue: { [weak self] (error) in
+                self?.show(error: error)
+            })
+            .store(in: &bindings)
     }
 
     func updatePlayer(with composition: Composition) {

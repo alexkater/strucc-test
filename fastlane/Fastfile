@@ -19,6 +19,13 @@ platform :ios do
 
 
   lane :tests do
-    scan
+    scan(
+      code_coverage: true
+    )
+
+    xcov(
+      output_directory: "xcov_output",
+      only_project_targets: true,
+    )
   end
 end

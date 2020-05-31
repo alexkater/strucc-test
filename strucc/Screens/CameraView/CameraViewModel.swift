@@ -15,6 +15,7 @@ protocol CameraViewModelProtocol {
     var isButtonSelected: AnyPublisher<Bool, Never> { get }
     var navigate: AnyPublisher<Route?, Never> { get }
     var session: AnyPublisher<AVCaptureSession, Never> { get }
+    var error: AnyPublisher<String?, Never> { get }
 
     func recordButtonAction()
     func viewAppear()
@@ -29,6 +30,9 @@ final class CameraViewModel: CameraViewModelProtocol {
     lazy var navigate: AnyPublisher<Route?, Never> = mutableNavigate.eraseToAnyPublisher()
     private var mutableNavigate = CurrentValueSubject<Route?, Never>(nil)
 
+    lazy var error: AnyPublisher<String?, Never> = mutableError.eraseToAnyPublisher()
+    private var mutableError = CurrentValueSubject<String?, Never>(nil)
+
     private var bindings = Set<AnyCancellable>()
 
     private let cameraRecorder: CameraRecorderProtocol
@@ -40,7 +44,11 @@ final class CameraViewModel: CameraViewModelProtocol {
     }
 
     func recordButtonAction() {
-        cameraRecorder.startOrStopRecording()
+        do {
+            try cameraRecorder.startOrStopRecording()
+        } catch {
+            mutableError.value = error.localizedDescription
+        }
     }
 
     func viewAppear() {
@@ -52,7 +60,11 @@ final class CameraViewModel: CameraViewModelProtocol {
     }
 
     func switchCamera() {
-        cameraRecorder.switchCamera()
+        do {
+            try cameraRecorder.switchCamera()
+        } catch {
+            mutableError.value = error.localizedDescription
+        }
     }
 }
 

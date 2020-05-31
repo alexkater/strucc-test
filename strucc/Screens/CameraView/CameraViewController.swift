@@ -54,7 +54,7 @@ class CameraViewController: UIViewController {
     #if DEBUG
     @objc func longGestureTap(gestureReconizer: UILongPressGestureRecognizer) {
         guard gestureReconizer.state == .ended else { return }
-        presentRoute(.preview(urls: urlsMock))
+        presentRoute(.preview(urls: TestVideoMock.defaultUrls))
     }
     #endif
 }
@@ -132,6 +132,13 @@ private extension CameraViewController {
             .delay(for: 1, scheduler: RunLoop.main)
             .sink(receiveValue: { [weak self] (value) in
                 self?.presentRoute(value)
+            })
+            .store(in: &bindings)
+
+        viewModel.error
+            .compactMap { $0 }
+            .sink(receiveValue: { [weak self] (error) in
+                self?.show(error: error)
             })
             .store(in: &bindings)
     }
