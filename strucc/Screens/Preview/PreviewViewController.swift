@@ -37,13 +37,6 @@ final class PreviewViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIView.animate(withDuration: 1) { [weak self] in
-            self?.view.backgroundColor = .clear
-        }
-    }
 }
 
 private extension PreviewViewController {
@@ -57,7 +50,6 @@ private extension PreviewViewController {
 
     func setupView() {
         navigationController?.setNavigationBarHidden(true, animated: false)
-        self.view.backgroundColor = .red
 
         playerView = UIView(frame: view.bounds)
         playerView.backgroundColor = .clear
