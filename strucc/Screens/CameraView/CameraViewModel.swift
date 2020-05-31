@@ -16,6 +16,7 @@ protocol CameraViewModelProtocol {
     var navigate: AnyPublisher<Route?, Never> { get }
     var session: AnyPublisher<AVCaptureSession, Never> { get }
     var error: AnyPublisher<String?, Never> { get }
+    var helperText: AnyPublisher<String?, Never> { get }
 
     func recordButtonAction()
     func viewAppear()
@@ -32,6 +33,9 @@ final class CameraViewModel: CameraViewModelProtocol {
 
     lazy var error: AnyPublisher<String?, Never> = mutableError.eraseToAnyPublisher()
     private var mutableError = CurrentValueSubject<String?, Never>(nil)
+
+    lazy var helperText: AnyPublisher<String?, Never> = mutableHelperText.eraseToAnyPublisher()
+    private var mutableHelperText = CurrentValueSubject<String?, Never>(nil)
 
     private var bindings = Set<AnyCancellable>()
 
@@ -53,6 +57,7 @@ final class CameraViewModel: CameraViewModelProtocol {
 
     func viewAppear() {
         cameraRecorder.startSession()
+        mutableHelperText.value = "Record 2 videos!"
     }
 
     func viewDisappear() {
@@ -75,7 +80,13 @@ private extension CameraViewModel {
         isButtonSelected
             .filter { !$0 }
             .sink { [weak self] (_) in
+
+                if self?.cameraRecorder.videosUrls.count == 1 {
+                    self?.mutableHelperText.value = "Record another one :)"
+                }
+
                 if let urls = self?.cameraRecorder.videosUrls, urls.count == 2 {
+                    self?.mutableHelperText.value = "Editing time!"
                     self?.cameraRecorder.reset()
                     self?.mutableNavigate.send(Route.preview(urls: urls))
                 }

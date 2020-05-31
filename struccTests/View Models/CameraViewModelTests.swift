@@ -130,4 +130,32 @@ class CameraViewModelTests: XCTestCase {
 
         wait(for: [expectation], timeout: 1)
     }
+
+    func testHelperTexts() {
+        let expectationRotueReceived = XCTestExpectation(description: "Helper texts")
+        let urls: [URL] = [URL(string: "1"), URL(string: "2")].compactMap { $0 }
+
+        viewModel
+            .helperText
+            .collect(4)
+            .sink { (texts) in
+
+                XCTAssertNil(texts[0])
+                XCTAssertEqual(texts[1], "Record 2 videos!")
+                XCTAssertEqual(texts[2], "Record another one :)")
+                XCTAssertEqual(texts[3], "Editing time!")
+                expectationRotueReceived.fulfill()
+        }
+        .store(in: &bindings)
+
+        viewModel.viewAppear()
+        viewModel.recordButtonAction()
+        cameraRecorder.videosUrls.append(urls[0])
+        viewModel.recordButtonAction()
+        viewModel.recordButtonAction()
+        cameraRecorder.videosUrls.append(urls[1])
+        viewModel.recordButtonAction()
+
+        wait(for: [expectationRotueReceived], timeout: 1)
+    }
 }
