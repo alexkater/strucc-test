@@ -66,6 +66,10 @@ private extension EditorCollectionViewCell {
         filterNameLabel.textColor = .white
         filterNameLabel.textAlignment = .center
 
+        filterNameLabel.layer.shadowColor = UIColor.black.withAlphaComponent(0.8).cgColor
+        filterNameLabel.layer.shadowRadius = 4.0
+        filterNameLabel.layer.shadowOpacity = 1.0
+
         [imageView, filterNameLabel]
             .compactMap { $0 }
             .forEach { view in
